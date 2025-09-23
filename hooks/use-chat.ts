@@ -39,7 +39,7 @@ export function useChat(chatId: string) {
     onError: (error) => {
       console.error('Error loading chat:', error)
       // Redirect to home if chat not found
-      router.push('/')
+      router.push('/app')
     },
     onSuccess: (chat) => {
       // Update chat history with existing messages when chat loads

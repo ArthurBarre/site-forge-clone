@@ -18,7 +18,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: 'Clone des glands !',
   description:
-    'A clone of v0.dev built with the v0 SDK - Generate and preview React components with AI',
+    'Un clone de v0.dev construit avec le SDK v0 - Générez et prévisualisez des composants React avec l\'IA',
 }
 
 export default function RootLayout({

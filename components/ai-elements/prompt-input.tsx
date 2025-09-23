@@ -255,7 +255,7 @@ export const PromptInputTools = ({
   <div
     className={cn(
       'flex items-center gap-1',
-      '[&_button:first-child]:rounded-bl-xl',
+      '[&_button:first-child]:rounded-bl-sm',
       className,
     )}
     {...props}
@@ -276,7 +276,7 @@ export const PromptInputButton = ({
   return (
     <Button
       className={cn(
-        'shrink-0 gap-1.5 rounded-lg',
+        'shrink-0 gap-1.5 rounded-sm',
         variant === 'ghost' && 'text-muted-foreground',
         newSize === 'default' && 'px-3',
         className,
@@ -313,7 +313,7 @@ export const PromptInputSubmit = ({
 
   return (
     <Button
-      className={cn('gap-1.5 rounded-lg', className)}
+      className={cn('gap-1.5 rounded-sm', className)}
       size={size}
       type="submit"
       variant={variant}
@@ -573,7 +573,7 @@ export const PromptInputImagePreview = ({
       {attachments.map((attachment) => (
         <div
           key={attachment.id}
-          className="relative group rounded-lg overflow-hidden border bg-muted"
+          className="relative group rounded-sm overflow-hidden border bg-muted"
         >
           <img
             src={attachment.preview}
@@ -583,7 +583,7 @@ export const PromptInputImagePreview = ({
           {onRemove && (
             <button
               onClick={() => onRemove(attachment.id)}
-              className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-destructive text-destructive-foreground flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+              className="absolute -top-1 -right-1 w-5 h-5 rounded-sm bg-destructive text-destructive-foreground flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
               type="button"
             >
               <XIcon className="size-3" />

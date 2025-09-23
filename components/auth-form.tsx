@@ -34,7 +34,7 @@ export function AuthForm({ type }: AuthFormProps) {
           id="password"
           name="password"
           type="password"
-          placeholder="Password"
+          placeholder="Mot de passe"
           required
           className="w-full"
           minLength={type === 'signup' ? 6 : 1}
@@ -48,26 +48,26 @@ export function AuthForm({ type }: AuthFormProps) {
       <Button type="submit" className="w-full" disabled={isPending}>
         {isPending
           ? type === 'signin'
-            ? 'Signing in...'
-            : 'Creating account...'
+            ? 'Connexion en cours...'
+            : 'Création du compte...'
           : type === 'signin'
-            ? 'Sign In'
-            : 'Create Account'}
+            ? 'Se connecter'
+            : 'Créer un compte'}
       </Button>
 
       <div className="text-center text-sm text-muted-foreground">
         {type === 'signin' ? (
           <>
-            Don&apos;t have an account?{' '}
+            Vous n&apos;avez pas de compte ?{' '}
             <Link href="/register" className="text-primary hover:underline">
-              Sign up
+              S&apos;inscrire
             </Link>
           </>
         ) : (
           <>
-            Already have an account?{' '}
+            Vous avez déjà un compte ?{' '}
             <Link href="/login" className="text-primary hover:underline">
-              Sign in
+              Se connecter
             </Link>
           </>
         )}

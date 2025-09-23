@@ -3,7 +3,7 @@ import { ChatsClient } from '@/components/chats/chats-client'
 
 export default function ChatsPage() {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<div>Chargement...</div>}>
       <ChatsClient />
     </Suspense>
   )

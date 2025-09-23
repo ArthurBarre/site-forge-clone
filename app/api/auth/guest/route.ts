@@ -13,5 +13,5 @@ export async function GET(request: Request) {
     redirect(redirectUrl)
   }
 
-  redirect('/')
+  redirect('/app')
 }

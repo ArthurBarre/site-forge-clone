@@ -28,6 +28,9 @@ import { ChatInput } from '@/components/chat/chat-input'
 import { PreviewPanel } from '@/components/chat/preview-panel'
 import { ResizableLayout } from '@/components/shared/resizable-layout'
 import { BottomToolbar } from '@/components/shared/bottom-toolbar'
+import { Particles } from '@/components/ui/particles'
+import { AuroraText } from '../ui/aurora-text'
+import { BorderBeam } from '@/components/ui/border-beam'
 
 // Component that uses useSearchParams - needs to be wrapped in Suspense
 function SearchParamsHandler({ onReset }: { onReset: () => void }) {
@@ -201,20 +204,20 @@ export function HomeClient() {
             errorMessage = errorData.message
           } else if (response.status === 429) {
             errorMessage =
-              'You have exceeded your maximum number of messages for the day. Please try again later.'
+              'Vous avez dépassé votre nombre maximum de messages pour la journée. Veuillez réessayer plus tard.'
           }
         } catch (parseError) {
           console.error('Error parsing error response:', parseError)
           if (response.status === 429) {
             errorMessage =
-              'You have exceeded your maximum number of messages for the day. Please try again later.'
+              'Vous avez dépassé votre nombre maximum de messages pour la journée. Veuillez réessayer plus tard.'
           }
         }
         throw new Error(errorMessage)
       }
 
       if (!response.body) {
-        throw new Error('No response body for streaming')
+        throw new Error('Aucun corps de réponse pour le streaming')
       }
 
       setIsLoading(false)
@@ -237,7 +240,7 @@ export function HomeClient() {
       const errorMessage =
         error instanceof Error
           ? error.message
-          : 'Sorry, there was an error processing your message. Please try again.'
+          : 'Désolé, il y a eu une erreur lors du traitement de votre message. Veuillez réessayer.'
 
       setChatHistory((prev) => [
         ...prev,
@@ -372,20 +375,20 @@ export function HomeClient() {
             errorMessage = errorData.message
           } else if (response.status === 429) {
             errorMessage =
-              'You have exceeded your maximum number of messages for the day. Please try again later.'
+              'Vous avez dépassé votre nombre maximum de messages pour la journée. Veuillez réessayer plus tard.'
           }
         } catch (parseError) {
           console.error('Error parsing error response:', parseError)
           if (response.status === 429) {
             errorMessage =
-              'You have exceeded your maximum number of messages for the day. Please try again later.'
+              'Vous avez dépassé votre nombre maximum de messages pour la journée. Veuillez réessayer plus tard.'
           }
         }
         throw new Error(errorMessage)
       }
 
       if (!response.body) {
-        throw new Error('No response body for streaming')
+        throw new Error('Aucun corps de réponse pour le streaming')
       }
 
       setIsLoading(false)
@@ -407,7 +410,7 @@ export function HomeClient() {
       const errorMessage =
         error instanceof Error
           ? error.message
-          : 'Sorry, there was an error processing your message. Please try again.'
+          : 'Désolé, il y a eu une erreur lors du traitement de votre message. Veuillez réessayer.'
 
       setChatHistory((prev) => [
         ...prev,
@@ -503,7 +506,13 @@ export function HomeClient() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-black flex flex-col">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-slate-800 dark:to-indigo-900 flex flex-col relative overflow-hidden">
+      {/* Animated Background */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <Particles />
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 via-transparent to-purple-50/50 dark:from-slate-900/50 dark:via-transparent dark:to-indigo-900/50" />
+      </div>
+
       {/* Handle search params with Suspense boundary */}
       <Suspense fallback={null}>
         <SearchParamsHandler onReset={handleReset} />
@@ -512,186 +521,123 @@ export function HomeClient() {
       <AppHeader />
 
       {/* Main Content */}
-      <div className="flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl w-full">
-          <div className="text-center mb-8 md:mb-12">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-              What can we build together?
-            </h2>
+      <div className="flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="max-w-6xl w-full">
+          {/* Hero Section */}
+          <div className="text-center mb-12 md:mb-16">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-gray-900 via-blue-900 to-purple-900 dark:from-white dark:via-blue-100 dark:to-purple-100 bg-clip-text text-transparent leading-tight">
+              Créez des sites web
+              <br />
+              <AuroraText className="text-3xl sm:text-4xl md:text-5xl bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                en quelques secondes
+              </AuroraText>
+            </h1>
+            <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
+              Décrivez votre vision et laissez l'IA construire votre site web parfait. 
+              <span className="font-semibold text-blue-600 dark:text-blue-400"> Aucun code requis.</span>
+            </p>
           </div>
 
           {/* Prompt Input */}
-          <div className="max-w-2xl mx-auto">
-            <PromptInput
-              onSubmit={handleSendMessage}
-              className="w-full relative"
-              onImageDrop={handleImageFiles}
-              isDragOver={isDragOver}
-              onDragOver={handleDragOver}
-              onDragLeave={handleDragLeave}
-              onDrop={handleDrop}
-            >
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-8">
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">
+                Commencez votre projet
+              </h3>
+              <p className="text-gray-600 dark:text-gray-400">
+                Décrivez ce que vous voulez créer et laissez l'IA faire le reste
+              </p>
+            </div>
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-2xl blur-xl"></div>
+              <div className="relative bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-2xl border border-white/20 dark:border-gray-700/50 shadow-2xl overflow-hidden">
+                <PromptInput
+                  onSubmit={handleSendMessage}
+                  className="w-full relative"
+                  onImageDrop={handleImageFiles}
+                  isDragOver={isDragOver}
+                  onDragOver={handleDragOver}
+                  onDragLeave={handleDragLeave}
+                  onDrop={handleDrop}
+                >
               <PromptInputImagePreview
                 attachments={attachments}
                 onRemove={handleRemoveAttachment}
               />
-              <PromptInputTextarea
-                ref={textareaRef}
-                onChange={(e) => setMessage(e.target.value)}
-                value={message}
-                placeholder="Describe what you want to build..."
-                className="min-h-[80px] text-base"
-                disabled={isLoading}
-              />
-              <PromptInputToolbar>
-                <PromptInputTools>
-                  <PromptInputImageButton
-                    onImageSelect={handleImageFiles}
+                  <PromptInputTextarea
+                    ref={textareaRef}
+                    onChange={(e) => setMessage(e.target.value)}
+                    value={message}
+                    placeholder="Décrivez ce que vous voulez construire... Par exemple: 'Une page d'accueil moderne pour un restaurant'"
+                    className="min-h-[100px] text-base bg-transparent border-0 focus:ring-0 placeholder:text-gray-500 dark:placeholder:text-gray-400"
                     disabled={isLoading}
                   />
-                </PromptInputTools>
-                <PromptInputTools>
-                  <PromptInputMicButton
-                    onTranscript={(transcript) => {
-                      setMessage(
-                        (prev) => prev + (prev ? ' ' : '') + transcript,
-                      )
-                    }}
-                    onError={(error) => {
-                      console.error('Speech recognition error:', error)
-                    }}
-                    disabled={isLoading}
-                  />
-                  <PromptInputSubmit
-                    disabled={!message.trim() || isLoading}
-                    status={isLoading ? 'streaming' : 'ready'}
-                  />
-                </PromptInputTools>
-              </PromptInputToolbar>
-            </PromptInput>
+                  <PromptInputToolbar>
+                    <PromptInputTools>
+                      <PromptInputImageButton
+                        onImageSelect={handleImageFiles}
+                        disabled={isLoading}
+                      />
+                    </PromptInputTools>
+                    <PromptInputTools>
+                      <PromptInputMicButton
+                        onTranscript={(transcript) => {
+                          setMessage(
+                            (prev) => prev + (prev ? ' ' : '') + transcript,
+                          )
+                        }}
+                        onError={(error) => {
+                          console.error('Speech recognition error:', error)
+                        }}
+                        disabled={isLoading}
+                      />
+                      <PromptInputSubmit
+                        disabled={!message.trim() || isLoading}
+                        status={isLoading ? 'streaming' : 'ready'}
+                      />
+                    </PromptInputTools>
+                  </PromptInputToolbar>
+                </PromptInput>
+                
+                {/* BorderBeam Effects */}
+                <BorderBeam
+                  duration={8}
+                  size={400}
+                  className="from-transparent via-blue-500 to-transparent"
+                />
+                <BorderBeam
+                  duration={8}
+                  delay={4}
+                  size={400}
+                  borderWidth={2}
+                  className="from-transparent via-purple-500 to-transparent"
+                />
+                <BorderBeam
+                  duration={8}
+                  delay={2}
+                  size={300}
+                  borderWidth={1}
+                  className="from-transparent via-pink-500 to-transparent"
+                />
+              </div>
+            </div>
           </div>
 
-          {/* Suggestions */}
-          <div className="mt-4 max-w-2xl mx-auto">
-            <Suggestions>
-              <Suggestion
-                onClick={() => {
-                  setMessage('Landing page')
-                  // Submit after setting message
-                  setTimeout(() => {
-                    const form = textareaRef.current?.form
-                    if (form) {
-                      form.requestSubmit()
-                    }
-                  }, 0)
-                }}
-                suggestion="Landing page"
-              />
-              <Suggestion
-                onClick={() => {
-                  setMessage('Todo app')
-                  // Submit after setting message
-                  setTimeout(() => {
-                    const form = textareaRef.current?.form
-                    if (form) {
-                      form.requestSubmit()
-                    }
-                  }, 0)
-                }}
-                suggestion="Todo app"
-              />
-              <Suggestion
-                onClick={() => {
-                  setMessage('Dashboard')
-                  // Submit after setting message
-                  setTimeout(() => {
-                    const form = textareaRef.current?.form
-                    if (form) {
-                      form.requestSubmit()
-                    }
-                  }, 0)
-                }}
-                suggestion="Dashboard"
-              />
-              <Suggestion
-                onClick={() => {
-                  setMessage('Blog')
-                  // Submit after setting message
-                  setTimeout(() => {
-                    const form = textareaRef.current?.form
-                    if (form) {
-                      form.requestSubmit()
-                    }
-                  }, 0)
-                }}
-                suggestion="Blog"
-              />
-              <Suggestion
-                onClick={() => {
-                  setMessage('E-commerce')
-                  // Submit after setting message
-                  setTimeout(() => {
-                    const form = textareaRef.current?.form
-                    if (form) {
-                      form.requestSubmit()
-                    }
-                  }, 0)
-                }}
-                suggestion="E-commerce"
-              />
-              <Suggestion
-                onClick={() => {
-                  setMessage('Portfolio')
-                  // Submit after setting message
-                  setTimeout(() => {
-                    const form = textareaRef.current?.form
-                    if (form) {
-                      form.requestSubmit()
-                    }
-                  }, 0)
-                }}
-                suggestion="Portfolio"
-              />
-              <Suggestion
-                onClick={() => {
-                  setMessage('Chat app')
-                  // Submit after setting message
-                  setTimeout(() => {
-                    const form = textareaRef.current?.form
-                    if (form) {
-                      form.requestSubmit()
-                    }
-                  }, 0)
-                }}
-                suggestion="Chat app"
-              />
-              <Suggestion
-                onClick={() => {
-                  setMessage('Calculator')
-                  // Submit after setting message
-                  setTimeout(() => {
-                    const form = textareaRef.current?.form
-                    if (form) {
-                      form.requestSubmit()
-                    }
-                  }, 0)
-                }}
-                suggestion="Calculator"
-              />
-            </Suggestions>
-          </div>
 
           {/* Footer */}
-          <div className="mt-8 md:mt-16 text-center text-sm text-muted-foreground">
-            <p>
-              Powered by{' '}
-              <Link
-                href="https://v0-sdk.dev"
-                className="text-foreground hover:underline"
-              >
-                v0 SDK
-              </Link>
-            </p>
+          <div className="mt-16 md:mt-20 text-center">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 dark:bg-gray-800/50 backdrop-blur-sm border border-white/20 dark:border-gray-700/50">
+              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+              <span className="text-sm text-gray-600 dark:text-gray-400">
+                Propulsé par{' '}
+                <Link
+                  href="https://v0-sdk.dev"
+                  className="font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors"
+                >
+                  Ordinarthur & Philou
+                </Link>
+              </span>
+            </div>
           </div>
         </div>
       </div>

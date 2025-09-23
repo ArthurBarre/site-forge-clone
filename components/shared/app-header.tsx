@@ -3,7 +3,8 @@
 import { useState, useEffect, Suspense } from 'react'
 import Link from 'next/link'
 import { usePathname, useSearchParams } from 'next/navigation'
-import { ChatSelector } from './chat-selector'
+// import { ChatSelector } from './chat-selector'
+
 import { MobileMenu } from './mobile-menu'
 import { useSession } from 'next-auth/react'
 import { UserNav } from '@/components/user-nav'
@@ -18,6 +19,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
+import { AuroraText } from '../ui/aurora-text'
 
 interface AppHeaderProps {
   className?: string
@@ -64,7 +66,7 @@ export function AppHeader({ className = '' }: AppHeaderProps) {
 
   return (
     <div
-      className={`${!isHomepage ? 'border-b border-border dark:border-input' : ''} ${className}`}
+      className={`relative z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm ${!isHomepage ? 'border-b border-border dark:border-input' : ''} ${className}`}
     >
       {/* Handle search params with Suspense boundary */}
       <Suspense fallback={null}>
@@ -73,28 +75,42 @@ export function AppHeader({ className = '' }: AppHeaderProps) {
 
       <div className="px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          {/* Left side - Logo and Selector */}
-          <div className="flex items-center gap-4">
+          {/* Left side - Logo */}
+          <div className="flex items-center gap-4 relative z-10">
             <Link
-              href="/"
+              href="/app"
               onClick={handleLogoClick}
-              className="text-lg font-semibold text-gray-900 dark:text-white hover:text-gray-700 dark:hover:text-gray-300"
+              className="relative z-10"
             >
-              Clone des glands !
+            <AuroraText
+            className="text-lg font-semibold text-gray-900 dark:text-white hover:text-gray-700 dark:hover:text-gray-300"
+            >SiteForge</AuroraText>
+
+
             </Link>
+
             {/* Hide ChatSelector on mobile */}
-            <div className="hidden lg:block">
+            {/* <div className="hidden lg:block">
               <ChatSelector />
-            </div>
+            </div> */}
           </div>
 
-          {/* Desktop right side - What's This, GitHub, Deploy, and User */}
-          <div className="hidden lg:flex items-center gap-4">
+          {/* Desktop right side - Navigation and User */}
+          <div className="hidden lg:flex items-center gap-3 relative z-10">
+            <Link
+              href="/sites"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-all duration-200 cursor-pointer relative z-10"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+              </svg>
+              Mes sites
+            </Link>
             <UserNav session={session} />
           </div>
 
           {/* Mobile right side - Only menu button and user avatar */}
-          <div className="flex lg:hidden items-center gap-2">
+          <div className="flex lg:hidden items-center gap-2 relative z-10">
             <UserNav session={session} />
             <MobileMenu onInfoDialogOpen={() => setIsInfoDialogOpen(true)} />
           </div>

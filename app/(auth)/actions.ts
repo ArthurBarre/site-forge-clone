@@ -39,7 +39,7 @@ export async function signInAction(
     })
 
     revalidatePath('/')
-    redirect('/?refresh=session')
+    redirect('/app?refresh=session')
   } catch (error) {
     if (error instanceof z.ZodError) {
       return {
@@ -104,7 +104,7 @@ export async function signUpAction(
     }
 
     revalidatePath('/')
-    redirect('/?refresh=session')
+    redirect('/app?refresh=session')
   } catch (error) {
     if (error instanceof z.ZodError) {
       return {

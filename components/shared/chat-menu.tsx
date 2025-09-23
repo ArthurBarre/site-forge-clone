@@ -76,7 +76,7 @@ export function ChatMenu({ chatId }: ChatMenuProps) {
 
       // Close dialog and navigate back to homepage
       setIsDeleteDialogOpen(false)
-      router.push('/')
+      router.push('/app')
     } catch (error) {
       console.error('Error deleting chat:', error)
       // You could add a toast notification here
@@ -96,7 +96,7 @@ export function ChatMenu({ chatId }: ChatMenuProps) {
             disabled={isLoading}
           >
             <MoreHorizontal className="h-4 w-4" />
-            <span className="sr-only">Open chat menu</span>
+            <span className="sr-only">Ouvrir le menu de conversation</span>
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
@@ -117,7 +117,7 @@ export function ChatMenu({ chatId }: ChatMenuProps) {
             disabled={isLoading}
           >
             <Copy className="mr-2 h-4 w-4" />
-            Duplicate Chat
+            Dupliquer la conversation
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() => setIsDeleteDialogOpen(true)}
@@ -125,7 +125,7 @@ export function ChatMenu({ chatId }: ChatMenuProps) {
             variant="destructive"
           >
             <Trash2 className="mr-2 h-4 w-4" />
-            Delete Chat
+            Supprimer la conversation
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
@@ -137,10 +137,10 @@ export function ChatMenu({ chatId }: ChatMenuProps) {
       >
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Duplicate Chat</DialogTitle>
+            <DialogTitle>Dupliquer la conversation</DialogTitle>
             <DialogDescription>
-              This will create a copy of the current chat. You'll be redirected
-              to the new chat once it's created.
+              Cela créera une copie de la conversation actuelle. Vous serez redirigé
+              vers la nouvelle conversation une fois qu'elle sera créée.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
@@ -149,10 +149,10 @@ export function ChatMenu({ chatId }: ChatMenuProps) {
               onClick={() => setIsDuplicateDialogOpen(false)}
               disabled={isLoading}
             >
-              Cancel
+              Annuler
             </Button>
             <Button onClick={handleDuplicateChat} disabled={isLoading}>
-              {isLoading ? 'Duplicating...' : 'Duplicate Chat'}
+              {isLoading ? 'Duplication en cours...' : 'Dupliquer la conversation'}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -162,10 +162,10 @@ export function ChatMenu({ chatId }: ChatMenuProps) {
       <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Delete Chat</DialogTitle>
+            <DialogTitle>Supprimer la conversation</DialogTitle>
             <DialogDescription>
-              Are you sure you want to delete this chat? This action cannot be
-              undone and will permanently remove the chat and all its messages.
+              Êtes-vous sûr de vouloir supprimer cette conversation ? Cette action ne peut pas être
+              annulée et supprimera définitivement la conversation et tous ses messages.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
@@ -174,14 +174,14 @@ export function ChatMenu({ chatId }: ChatMenuProps) {
               onClick={() => setIsDeleteDialogOpen(false)}
               disabled={isLoading}
             >
-              Cancel
+              Annuler
             </Button>
             <Button
               variant="destructive"
               onClick={handleDeleteChat}
               disabled={isLoading}
             >
-              {isLoading ? 'Deleting...' : 'Delete Chat'}
+              {isLoading ? 'Suppression en cours...' : 'Supprimer la conversation'}
             </Button>
           </DialogFooter>
         </DialogContent>

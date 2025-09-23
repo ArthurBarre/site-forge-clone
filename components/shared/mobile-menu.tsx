@@ -79,7 +79,7 @@ export function MobileMenu({ onInfoDialogOpen }: MobileMenuProps) {
         onClick={openMenu}
       >
         <Menu className="h-5 w-5" />
-        <span className="sr-only">Open menu</span>
+        <span className="sr-only">Ouvrir le menu</span>
       </Button>
 
       {/* Mobile menu overlay */}
@@ -109,20 +109,29 @@ export function MobileMenu({ onInfoDialogOpen }: MobileMenuProps) {
                   onClick={closeMenu}
                 >
                   <X className="h-5 w-5" />
-                  <span className="sr-only">Close menu</span>
+                  <span className="sr-only">Fermer le menu</span>
                 </Button>
               </div>
 
               {/* Menu content */}
               <div className="flex-1 overflow-y-auto p-4 pt-16 space-y-4">
-                {/* Chat selector for authenticated users */}
+                {/* Navigation for authenticated users */}
                 {session?.user?.id && (
                   <div className="space-y-2">
                     <h3 className="text-sm font-medium text-muted-foreground">
-                      Your Chats
+                      Navigation
                     </h3>
-                    <div className="w-full">
-                      <ChatSelector />
+                    <div className="space-y-2">
+                      <Link
+                        href="/sites"
+                        className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-md transition-all duration-200"
+                        onClick={closeMenu}
+                      >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                        </svg>
+                        Mes sites
+                      </Link>
                     </div>
                   </div>
                 )}
@@ -140,7 +149,7 @@ export function MobileMenu({ onInfoDialogOpen }: MobileMenuProps) {
                     <div className="flex items-center gap-3 w-full">
                       <Info className="h-4 w-4 flex-shrink-0" />
                       <div className="flex-1">
-                        <div className="font-medium">What's This?</div>
+                        <div className="font-medium">Qu'est-ce que c'est ?</div>
                         {/* <div className="text-sm text-muted-foreground">
                           Learn about v0 Clone
                         </div> */}
@@ -185,7 +194,7 @@ export function MobileMenu({ onInfoDialogOpen }: MobileMenuProps) {
                       <div className="flex items-center gap-3 w-full">
                         <VercelIcon size={16} />
                         <div className="flex-1">
-                          <div className="font-medium">Deploy with Vercel</div>
+                          <div className="font-medium">Déployer avec Vercel</div>
                           {/* <div className="text-sm text-muted-foreground">
                             Get your own v0 clone
                           </div> */}
