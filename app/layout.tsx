@@ -16,9 +16,9 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'Clone des glands !',
+  title: 'Site Forge',
   description:
-    'Un clone de v0.dev construit avec le SDK v0 - Générez et prévisualisez des composants React avec l\'IA',
+    'Site Forge vous permet de créer des sites web en quelques secondes avec l\'IA.',
 }
 
 export default function RootLayout({

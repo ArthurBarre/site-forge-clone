@@ -35,8 +35,21 @@ export function FAQSection() {
   ]
 
   return (
-    <section className="py-20 px-4">
-      <div className="container mx-auto">
+    <section className="py-20 px-4 relative overflow-hidden">
+      {/* Background gradients - même que features */}
+      <div className="absolute inset-0 bg-gradient-to-br from-background via-slate-50/30 to-background dark:via-slate-900/30" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_20%,oklch(0.6_0.18_200_/_0.06),transparent_60%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_80%,oklch(0.7_0.15_280_/_0.04),transparent_60%)]" />
+      
+      {/* Subtle grid pattern */}
+      <div className="absolute inset-0 opacity-[0.015] dark:opacity-[0.03]">
+        <div className="absolute inset-0" style={{
+          backgroundImage: `linear-gradient(rgba(0,0,0,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.1) 1px, transparent 1px)`,
+          backgroundSize: '24px 24px'
+        }} />
+      </div>
+
+      <div className="container mx-auto relative z-10">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-balance mb-6">Questions fréquentes</h2>
           <p className="text-xl text-muted-foreground text-balance max-w-2xl mx-auto">

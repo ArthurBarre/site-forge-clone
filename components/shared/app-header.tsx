@@ -66,7 +66,7 @@ export function AppHeader({ className = '' }: AppHeaderProps) {
 
   return (
     <div
-      className={`relative z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm ${!isHomepage ? 'border-b border-border dark:border-input' : ''} ${className}`}
+      className={`relative z-50 bg-black/70 dark:bg-black/70 backdrop-blur-md ${!isHomepage ? 'border-b border-border dark:border-input' : ''} ${className}`}
     >
       {/* Handle search params with Suspense boundary */}
       <Suspense fallback={null}>

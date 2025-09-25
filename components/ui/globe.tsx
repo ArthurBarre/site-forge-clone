@@ -10,16 +10,16 @@ const MOVEMENT_DAMPING = 1400;
 
 // Marqueurs par défaut (villes du monde)
 const DEFAULT_MARKERS = [
-  { location: [14.5995, 120.9842], size: 0.03 }, // Manille
-  { location: [19.076, 72.8777], size: 0.1 },    // Mumbai
-  { location: [23.8103, 90.4125], size: 0.05 }, // Dhaka
-  { location: [30.0444, 31.2357], size: 0.07 }, // Le Caire
-  { location: [39.9042, 116.4074], size: 0.08 }, // Pékin
-  { location: [-23.5505, -46.6333], size: 0.1 }, // São Paulo
-  { location: [19.4326, -99.1332], size: 0.1 },  // Mexico
-  { location: [40.7128, -74.006], size: 0.1 },   // New York
-  { location: [34.6937, 135.5022], size: 0.05 }, // Osaka
-  { location: [41.0082, 28.9784], size: 0.06 },  // Istanbul
+  { location: [14.5995, 120.9842] as [number, number], size: 0.03 }, // Manille
+  { location: [19.076, 72.8777] as [number, number], size: 0.1 },    // Mumbai
+  { location: [23.8103, 90.4125] as [number, number], size: 0.05 }, // Dhaka
+  { location: [30.0444, 31.2357] as [number, number], size: 0.07 }, // Le Caire
+  { location: [39.9042, 116.4074] as [number, number], size: 0.08 }, // Pékin
+  { location: [-23.5505, -46.6333] as [number, number], size: 0.1 }, // São Paulo
+  { location: [19.4326, -99.1332] as [number, number], size: 0.1 },  // Mexico
+  { location: [40.7128, -74.006] as [number, number], size: 0.1 },   // New York
+  { location: [34.6937, 135.5022] as [number, number], size: 0.05 }, // Osaka
+  { location: [41.0082, 28.9784] as [number, number], size: 0.06 },  // Istanbul
 ];
 
 const createGlobeConfig = (userLocation?: { lat: number; lng: number }, useDefaultMarkers: boolean = false): COBEOptions => ({
@@ -37,7 +37,7 @@ const createGlobeConfig = (userLocation?: { lat: number; lng: number }, useDefau
   markerColor: [251 / 255, 100 / 255, 21 / 255],
   glowColor: [0.2, 0.4, 1],
   markers: userLocation ? [
-    { location: [userLocation.lat, userLocation.lng], size: 0.1 }
+    { location: [userLocation.lat, userLocation.lng] as [number, number], size: 0.1 }
   ] : useDefaultMarkers ? DEFAULT_MARKERS : [],
 });
 
@@ -129,7 +129,7 @@ export function Globe({
     window.addEventListener("resize", onResize);
     onResize();
 
-    const config = createGlobeConfig(userLocation, useDefaultMarkers);
+    const config = createGlobeConfig(userLocation || undefined, useDefaultMarkers);
     const globe = createGlobe(canvasRef.current!, {
       ...config,
       width: width * 2,

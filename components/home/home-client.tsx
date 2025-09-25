@@ -19,7 +19,6 @@ import {
   clearPromptFromStorage,
   type ImageAttachment,
 } from '@/components/ai-elements/prompt-input'
-import { Suggestions, Suggestion } from '@/components/ai-elements/suggestion'
 import { AppHeader } from '@/components/shared/app-header'
 import { useStreaming } from '@/contexts/streaming-context'
 import { StreamingMessage } from '@v0-sdk/react'

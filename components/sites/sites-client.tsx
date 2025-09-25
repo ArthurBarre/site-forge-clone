@@ -29,10 +29,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { BorderBeam } from '@/components/ui/border-beam'
-import { Particles } from '@/components/ui/particles'
 import { AppHeader } from '@/components/shared/app-header'
-import { RainbowButton } from '../ui/rainbow-button'
 
 interface Chat {
   id: string
@@ -280,20 +277,20 @@ export function SitesClient() {
   // Don't show if user is not authenticated
   if (!session?.user?.id) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-slate-800 dark:to-indigo-900 flex flex-col relative overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <Particles />
-        </div>
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 flex flex-col">
         <AppHeader />
-        <div className="flex-1 flex items-center justify-center relative z-10">
+        <div className="flex-1 flex items-center justify-center">
           <div className="text-center">
-            <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+            <h1 className="text-4xl font-bold text-foreground mb-4">
               Connectez-vous pour voir vos sites
             </h1>
-            <p className="text-gray-600 dark:text-gray-400 mb-8">
+            <p className="text-muted-foreground mb-8">
               Vous devez être connecté pour accéder à vos projets
             </p>
-            <Button onClick={() => router.push('/login')}>
+            <Button 
+              onClick={() => router.push('/login')}
+              className="bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-white shadow-lg hover:shadow-xl transition-all duration-300"
+            >
               Se connecter
             </Button>
           </div>
@@ -303,17 +300,12 @@ export function SitesClient() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-slate-800 dark:to-indigo-900 flex flex-col relative overflow-hidden">
-      {/* Animated Background */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
-        <Particles />
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 via-transparent to-purple-50/50 dark:from-slate-900/50 dark:via-transparent dark:to-indigo-900/50" />
-      </div>
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 flex flex-col">
 
       <AppHeader />
 
       {/* Main Content */}
-      <div className="flex-1 relative z-10">
+      <div className="flex-1">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {/* Header */}
           <div className="mb-8">
@@ -322,21 +314,26 @@ export function SitesClient() {
                 variant="ghost"
                 size="sm"
                 onClick={() => router.push('/')}
-                className="hover:bg-white/20 dark:hover:bg-gray-800/50"
               >
                 <ArrowLeft className="h-4 w-4 mr-2" />
                 Retour
               </Button>
               <div className="flex-1">
-                <h1 className="text-4xl sm:text-5xl font-bold bg-gradient-to-r from-gray-900 via-blue-900 to-purple-900 dark:from-white dark:via-blue-100 dark:to-purple-100 bg-clip-text text-transparent">
+                <h1 className="text-4xl sm:text-5xl font-bold text-foreground">
                   Mes sites
                 </h1>
-                <p className="text-lg text-gray-600 dark:text-gray-400 mt-2">
+                <p className="text-lg text-muted-foreground mt-2">
                   Gérez et accédez à tous vos projets créés avec l'IA
                 </p>
               </div>
               <div className="flex items-center gap-3">
-                <RainbowButton variant="outline">Créer un site</RainbowButton>
+                <Button 
+                  onClick={() => router.push('/app')}
+                  className="bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-white shadow-lg hover:shadow-xl transition-all duration-300"
+                >
+                  <Plus className="w-4 h-4 mr-2" />
+                  Créer un site
+                </Button>
               </div>
             </div>
 
@@ -348,12 +345,12 @@ export function SitesClient() {
                   placeholder="Rechercher dans vos sites..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10 bg-white/60 dark:bg-gray-900/60 backdrop-blur-sm border-white/20 dark:border-gray-700/50"
+                  className="pl-10 bg-background/50 backdrop-blur-sm border-border/50 focus:border-primary/50 focus:ring-primary/20"
                 />
               </div>
               <div className="flex gap-2">
                 <Select value={filterPrivacy} onValueChange={setFilterPrivacy}>
-                  <SelectTrigger className="w-40 bg-white/60 dark:bg-gray-900/60 backdrop-blur-sm border-white/20 dark:border-gray-700/50">
+                  <SelectTrigger className="w-40 bg-background/50 backdrop-blur-sm border-border/50 focus:border-primary/50">
                     <SelectValue placeholder="Filtrer" />
                   </SelectTrigger>
                   <SelectContent>
@@ -363,7 +360,7 @@ export function SitesClient() {
                     <SelectItem value="team">Équipe</SelectItem>
                   </SelectContent>
                 </Select>
-                <div className="flex bg-white/60 dark:bg-gray-900/60 backdrop-blur-sm border border-white/20 dark:border-gray-700/50 rounded-md">
+                <div className="flex bg-background/50 backdrop-blur-sm border border-border/50 rounded-md overflow-hidden">
                   <Button
                     variant={viewMode === 'grid' ? 'default' : 'ghost'}
                     size="sm"
@@ -395,30 +392,25 @@ export function SitesClient() {
             </div>
           ) : filteredChats.length === 0 ? (
             <div className="text-center py-16">
-              <div className="inline-flex items-center justify-center w-20 h-20 mb-6 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 shadow-lg">
-                <Sparkles className="w-10 h-10 text-white" />
+              <div className="inline-flex items-center justify-center w-20 h-20 mb-6 rounded-full bg-muted">
+                <Sparkles className="w-10 h-10 text-muted-foreground" />
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+              <h3 className="text-2xl font-bold text-foreground mb-4">
                 {searchTerm ? 'Aucun site trouvé' : 'Aucun site créé'}
               </h3>
-              <p className="text-gray-600 dark:text-gray-400 mb-8 max-w-md mx-auto">
+              <p className="text-muted-foreground mb-8 max-w-md mx-auto">
                 {searchTerm 
                   ? 'Essayez de modifier votre recherche ou vos filtres.'
                   : 'Commencez par créer votre premier site avec l\'IA. C\'est simple et rapide !'
                 }
               </p>
               {!searchTerm && (
-                <Button
+                <Button 
                   onClick={() => router.push('/')}
-                  className="relative overflow-hidden bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+                  className="bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-white shadow-lg hover:shadow-xl transition-all duration-300"
                 >
-                  <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-purple-400 opacity-0 hover:opacity-20 transition-opacity duration-300"></div>
-                  <div className="relative flex items-center gap-2">
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                    </svg>
-                    Créer mon premier site
-                  </div>
+                  <Plus className="w-4 h-4 mr-2" />
+                  Créer mon premier site
                 </Button>
               )}
             </div>
@@ -430,23 +422,19 @@ export function SitesClient() {
               {filteredChats.map((chat, index) => (
                 <div
                   key={chat.id}
-                  className={`group relative bg-white/60 dark:bg-gray-900/60 backdrop-blur-sm border border-white/20 dark:border-gray-700/50 rounded-2xl hover:shadow-2xl hover:scale-105 transition-all duration-300 hover:bg-white/80 dark:hover:bg-gray-900/80 overflow-hidden ${
+                  className={`group relative bg-card/80 backdrop-blur-sm border border-border/50 rounded-xl hover:shadow-xl hover:shadow-primary/5 hover:border-primary/20 transition-all duration-300 hover:-translate-y-1 overflow-hidden ${
                     viewMode === 'list' ? 'flex items-center p-6' : 'p-6'
                   }`}
-                  style={{
-                    animationDelay: `${index * 100}ms`,
-                    animation: 'fadeInUp 0.6s ease-out forwards'
-                  }}
                 >
                   <Link href={`/chats/${chat.id}`} className={viewMode === 'list' ? 'flex-1 flex items-center' : 'block'}>
                     <div className={viewMode === 'list' ? 'flex items-center gap-4' : 'mb-4'}>
-                      <div className="flex items-center gap-2">
-                        <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                        <h3 className="text-lg font-semibold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors truncate">
+                      <div className="flex items-center gap-3">
+                        <div className="w-3 h-3 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full shadow-sm"></div>
+                        <h3 className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors truncate">
                           {getChatDisplayName(chat)}
                         </h3>
                       </div>
-                      <div className="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
+                      <div className="flex items-center gap-4 text-sm text-muted-foreground">
                         <span className="flex items-center gap-1">
                           <MessageSquare className="w-4 h-4" />
                           {chat.messages?.length || 0} messages
@@ -468,7 +456,7 @@ export function SitesClient() {
                         <Button
                           variant="ghost"
                           size="sm"
-                          className="h-8 w-8 p-0 opacity-0 group-hover:opacity-100 transition-all duration-200 hover:bg-white/20 dark:hover:bg-gray-800/50 rounded-full"
+                          className="h-8 w-8 p-0 opacity-0 group-hover:opacity-100 transition-all duration-200 rounded-full hover:bg-primary/10 hover:text-primary"
                           disabled={
                             isRenamingChat ||
                             isDeletingChat ||
@@ -553,19 +541,6 @@ export function SitesClient() {
                     </DropdownMenu>
                   </div>
 
-                  {/* BorderBeam Effects for each project tile */}
-                  <BorderBeam
-                    duration={6}
-                    size={200}
-                    className="from-transparent via-blue-400 to-transparent opacity-60"
-                  />
-                  <BorderBeam
-                    duration={6}
-                    delay={3}
-                    size={150}
-                    borderWidth={1}
-                    className="from-transparent via-purple-400 to-transparent opacity-40"
-                  />
                 </div>
               ))}
             </div>
@@ -789,18 +764,6 @@ export function SitesClient() {
         </DialogContent>
       </Dialog>
 
-      <style jsx>{`
-        @keyframes fadeInUp {
-          from {
-            opacity: 0;
-            transform: translateY(30px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-      `}</style>
     </div>
   )
 }

@@ -1,5 +1,8 @@
+"use client"
+
 import { Button } from "@/components/ui/button"
 import { Check } from "lucide-react"
+import { redirect } from "next/navigation"
 
 export function PricingSection() {
   const plans = [
@@ -45,8 +48,21 @@ export function PricingSection() {
   ]
 
   return (
-    <section id="tarifs" className="py-16 md:py-20 px-4 bg-muted/20">
-      <div className="container mx-auto">
+    <section id="tarifs" className="py-16 md:py-20 px-4 relative overflow-hidden">
+      {/* Background gradients - même que how-it-works */}
+      <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-background to-slate-100 dark:from-slate-900 dark:via-background dark:to-slate-800" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,oklch(0.7_0.15_280_/_0.1),transparent_50%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_70%,oklch(0.65_0.2_320_/_0.08),transparent_50%)]" />
+      
+      {/* Subtle pattern overlay */}
+      <div className="absolute inset-0 opacity-[0.02] dark:opacity-[0.05]">
+        <div className="absolute inset-0" style={{
+          backgroundImage: `radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)`,
+          backgroundSize: '20px 20px'
+        }} />
+      </div>
+
+      <div className="container mx-auto relative z-10">
         <div className="text-center mb-12 md:mb-16">
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-balance mb-4 md:mb-6">Tarifs simples et transparents</h2>
           <p className="text-lg md:text-xl text-muted-foreground text-balance max-w-2xl mx-auto px-4">
@@ -88,7 +104,8 @@ export function PricingSection() {
               </ul>
 
               <Button
-                className={`w-full text-sm md:text-base ${plan.popular ? "gradient-primary text-white border-0" : "glass-light"}`}
+                onClick={() => redirect("/app")}
+                className={`w-full text-sm md:text-base cursor-pointer ${plan.popular ? "gradient-primary text-white border-0" : "glass-light"}`}
                 size="lg"
               >
                 {plan.cta}
