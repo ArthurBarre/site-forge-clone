@@ -75,14 +75,11 @@ export function PreviewPanel({
           <WebPreviewBody key={refreshKey} src={currentChat.demo} />
         ) : (
           <div className="flex-1 flex items-center justify-center bg-gray-50 dark:bg-black">
-            <div className="text-center">
-              <p className="text-sm font-medium text-gray-700 dark:text-gray-200">
-                No preview available
-              </p>
-              <p className="text-xs text-gray-700/50 dark:text-gray-200/50">
-                Start a conversation to see your app here
-              </p>
-            </div>
+            <img
+              src="/loader-preview.gif"
+              alt="Loading preview..."
+              className="w-100 h-100"
+            />
           </div>
         )}
       </WebPreview>

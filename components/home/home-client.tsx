@@ -30,6 +30,7 @@ import { BottomToolbar } from '@/components/shared/bottom-toolbar'
 import { Particles } from '@/components/ui/particles'
 import { AuroraText } from '../ui/aurora-text'
 import { BorderBeam } from '@/components/ui/border-beam'
+import { Editor } from '@/components/ui/editor'
 
 // Component that uses useSearchParams - needs to be wrapped in Suspense
 function SearchParamsHandler({ onReset }: { onReset: () => void }) {
@@ -98,6 +99,14 @@ export function HomeClient() {
         textareaRef.current.focus()
       }
     }, 0)
+  }
+
+  const handleEditorClick = () => {
+    // Scroll vers le bas de la page
+    window.scrollTo({ 
+      top: document.documentElement.scrollHeight, 
+      behavior: 'smooth' 
+    })
   }
 
   // Auto-focus the textarea on page load and restore from sessionStorage
@@ -525,16 +534,53 @@ export function HomeClient() {
           {/* Hero Section */}
           <div className="text-center mb-12 md:mb-16">
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-gray-900 via-blue-900 to-purple-900 dark:from-white dark:via-blue-100 dark:to-purple-100 bg-clip-text text-transparent leading-tight">
-              Créez des sites web
+              Votre site web
               <br />
               <AuroraText className="text-3xl sm:text-4xl md:text-5xl bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                en quelques secondes
+                en 30 secondes
               </AuroraText>
             </h1>
-            <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
-              Décrivez votre vision et laissez l'IA construire votre site web parfait. 
-              <span className="font-semibold text-blue-600 dark:text-blue-400"> Aucun code requis.</span>
+            <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed mb-8">
+              Décrivez simplement ce que vous voulez créer et notre IA va construire votre site web professionnel. 
+              <span className="font-semibold text-blue-600 dark:text-blue-400"> Aucune compétence technique requise.</span>
             </p>
+            
+            {/* Exemples d'inspiration */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto mb-8">
+              <div className="bg-white/10 dark:bg-gray-800/50 backdrop-blur-sm rounded-lg p-4 border border-white/20 dark:border-gray-700/50">
+                <div className="text-2xl mb-2">🏪</div>
+                <h3 className="font-semibold text-gray-900 dark:text-white mb-1">Boutique en ligne</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-400">"Une boutique de vêtements avec catalogue et panier"</p>
+              </div>
+              <div className="bg-white/10 dark:bg-gray-800/50 backdrop-blur-sm rounded-lg p-4 border border-white/20 dark:border-gray-700/50">
+                <div className="text-2xl mb-2">🍽️</div>
+                <h3 className="font-semibold text-gray-900 dark:text-white mb-1">Restaurant</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-400">"Site pour restaurant avec menu et réservations"</p>
+              </div>
+              <div className="bg-white/10 dark:bg-gray-800/50 backdrop-blur-sm rounded-lg p-4 border border-white/20 dark:border-gray-700/50">
+                <div className="text-2xl mb-2">💼</div>
+                <h3 className="font-semibold text-gray-900 dark:text-white mb-1">Portfolio</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-400">"Portfolio créatif avec galerie et contact"</p>
+              </div>
+            </div>
+            
+            {/* Call to action */}
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 text-sm text-gray-500 dark:text-gray-400">
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                <span>Gratuit pour commencer</span>
+              </div>
+              <div className="hidden sm:block w-px h-4 bg-gray-300 dark:bg-gray-600"></div>
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+                <span>Déploiement automatique</span>
+              </div>
+              <div className="hidden sm:block w-px h-4 bg-gray-300 dark:bg-gray-600"></div>
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-purple-500 rounded-full animate-pulse"></div>
+                <span>Personnalisation illimitée</span>
+              </div>
+            </div>
           </div>
 
           {/* Prompt Input */}
@@ -549,54 +595,24 @@ export function HomeClient() {
             </div>
             <div className="relative">
               <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-2xl blur-xl"></div>
-              <div className="relative bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-2xl border border-white/20 dark:border-gray-700/50 shadow-2xl overflow-hidden">
-                <PromptInput
+              <div className="relative bg-black/80 backdrop-blur-sm rounded-2xl border border-white/20 shadow-2xl overflow-hidden" onClick={handleEditorClick}>
+                <Editor
+                  value={message}
+                  onChange={setMessage}
                   onSubmit={handleSendMessage}
-                  className="w-full relative"
-                  onImageDrop={handleImageFiles}
-                  isDragOver={isDragOver}
-                  onDragOver={handleDragOver}
-                  onDragLeave={handleDragLeave}
-                  onDrop={handleDrop}
-                >
-              <PromptInputImagePreview
-                attachments={attachments}
-                onRemove={handleRemoveAttachment}
-              />
-                  <PromptInputTextarea
-                    ref={textareaRef}
-                    onChange={(e) => setMessage(e.target.value)}
-                    value={message}
-                    placeholder="Décrivez ce que vous voulez construire... Par exemple: 'Une page d'accueil moderne pour un restaurant'"
-                    className="min-h-[100px] text-base bg-transparent border-0 focus:ring-0 placeholder:text-gray-500 dark:placeholder:text-gray-400"
-                    disabled={isLoading}
-                  />
-                  <PromptInputToolbar>
-                    <PromptInputTools>
-                      <PromptInputImageButton
-                        onImageSelect={handleImageFiles}
-                        disabled={isLoading}
-                      />
-                    </PromptInputTools>
-                    <PromptInputTools>
-                      <PromptInputMicButton
-                        onTranscript={(transcript) => {
-                          setMessage(
-                            (prev) => prev + (prev ? ' ' : '') + transcript,
-                          )
-                        }}
-                        onError={(error) => {
-                          console.error('Speech recognition error:', error)
-                        }}
-                        disabled={isLoading}
-                      />
-                      <PromptInputSubmit
-                        disabled={!message.trim() || isLoading}
-                        status={isLoading ? 'streaming' : 'ready'}
-                      />
-                    </PromptInputTools>
-                  </PromptInputToolbar>
-                </PromptInput>
+                  placeholder="Décrivez ce que vous voulez construire... Par exemple: 'Une page d'accueil moderne pour un restaurant'"
+                  disabled={isLoading}
+                  isLoading={isLoading}
+                  onImageSelect={handleImageFiles}
+                  onMicTranscript={(transcript) => {
+                    setMessage((prev) => prev + (prev ? ' ' : '') + transcript)
+                  }}
+                  onMicError={(error) => {
+                    console.error('Speech recognition error:', error)
+                  }}
+                  className="w-full"
+                  darkMode={true}
+                />
                 
                 {/* BorderBeam Effects */}
                 <BorderBeam
@@ -624,7 +640,7 @@ export function HomeClient() {
 
 
           {/* Footer */}
-          <div className="mt-16 md:mt-20 text-center">
+          <div className="mt-16 mb-16 md:mt-20 text-center">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 dark:bg-gray-800/50 backdrop-blur-sm border border-white/20 dark:border-gray-700/50">
               <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
               <span className="text-sm text-gray-600 dark:text-gray-400">
@@ -640,6 +656,7 @@ export function HomeClient() {
           </div>
         </div>
       </div>
+
     </div>
   )
 }

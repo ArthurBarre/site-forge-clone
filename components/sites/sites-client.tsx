@@ -277,19 +277,19 @@ export function SitesClient() {
   // Don't show if user is not authenticated
   if (!session?.user?.id) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 flex flex-col">
+      <div className="min-h-screen bg-white dark:bg-gray-950 flex flex-col">
         <AppHeader />
         <div className="flex-1 flex items-center justify-center">
           <div className="text-center">
-            <h1 className="text-4xl font-bold text-foreground mb-4">
+            <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">
               Connectez-vous pour voir vos sites
             </h1>
-            <p className="text-muted-foreground mb-8">
+            <p className="text-gray-600 dark:text-gray-400 mb-8">
               Vous devez être connecté pour accéder à vos projets
             </p>
             <Button 
               onClick={() => router.push('/login')}
-              className="bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-white shadow-lg hover:shadow-xl transition-all duration-300"
+              className="bg-blue-600 hover:bg-blue-700 text-white"
             >
               Se connecter
             </Button>
@@ -300,7 +300,7 @@ export function SitesClient() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 flex flex-col">
+    <div className="min-h-screen bg-white dark:bg-gray-950 flex flex-col">
 
       <AppHeader />
 
@@ -309,48 +309,49 @@ export function SitesClient() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {/* Header */}
           <div className="mb-8">
-            <div className="flex items-center gap-4 mb-6">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => router.push('/')}
-              >
-                <ArrowLeft className="h-4 w-4 mr-2" />
-                Retour
-              </Button>
-              <div className="flex-1">
-                <h1 className="text-4xl sm:text-5xl font-bold text-foreground">
-                  Mes sites
-                </h1>
-                <p className="text-lg text-muted-foreground mt-2">
-                  Gérez et accédez à tous vos projets créés avec l'IA
-                </p>
-              </div>
-              <div className="flex items-center gap-3">
-                <Button 
-                  onClick={() => router.push('/app')}
-                  className="bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-white shadow-lg hover:shadow-xl transition-all duration-300"
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center gap-4">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => router.push('/')}
+                  className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100"
                 >
-                  <Plus className="w-4 h-4 mr-2" />
-                  Créer un site
+                  <ArrowLeft className="h-4 w-4 mr-2" />
+                  Retour
                 </Button>
+                <div>
+                  <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
+                    Mes sites
+                  </h1>
+                  <p className="text-gray-600 dark:text-gray-400 mt-1">
+                    Gérez et accédez à tous vos projets créés avec l'IA
+                  </p>
+                </div>
               </div>
+              <Button 
+                onClick={() => router.push('/app')}
+                className="bg-blue-600 hover:bg-blue-700 text-white"
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                Créer un site
+              </Button>
             </div>
 
             {/* Search and Filters */}
-            <div className="flex flex-col sm:flex-row gap-4 mb-8">
+            <div className="flex flex-col sm:flex-row gap-4 mb-6">
               <div className="relative flex-1">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
                 <Input
                   placeholder="Rechercher dans vos sites..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10 bg-background/50 backdrop-blur-sm border-border/50 focus:border-primary/50 focus:ring-primary/20"
+                  className="pl-10 border-gray-200 dark:border-gray-700"
                 />
               </div>
               <div className="flex gap-2">
                 <Select value={filterPrivacy} onValueChange={setFilterPrivacy}>
-                  <SelectTrigger className="w-40 bg-background/50 backdrop-blur-sm border-border/50 focus:border-primary/50">
+                  <SelectTrigger className="w-40 border-gray-200 dark:border-gray-700">
                     <SelectValue placeholder="Filtrer" />
                   </SelectTrigger>
                   <SelectContent>
@@ -360,24 +361,6 @@ export function SitesClient() {
                     <SelectItem value="team">Équipe</SelectItem>
                   </SelectContent>
                 </Select>
-                <div className="flex bg-background/50 backdrop-blur-sm border border-border/50 rounded-md overflow-hidden">
-                  <Button
-                    variant={viewMode === 'grid' ? 'default' : 'ghost'}
-                    size="sm"
-                    onClick={() => setViewMode('grid')}
-                    className="rounded-r-none"
-                  >
-                    <Grid className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    variant={viewMode === 'list' ? 'default' : 'ghost'}
-                    size="sm"
-                    onClick={() => setViewMode('list')}
-                    className="rounded-l-none"
-                  >
-                    <List className="h-4 w-4" />
-                  </Button>
-                </div>
               </div>
             </div>
           </div>
@@ -392,13 +375,13 @@ export function SitesClient() {
             </div>
           ) : filteredChats.length === 0 ? (
             <div className="text-center py-16">
-              <div className="inline-flex items-center justify-center w-20 h-20 mb-6 rounded-full bg-muted">
-                <Sparkles className="w-10 h-10 text-muted-foreground" />
+              <div className="inline-flex items-center justify-center w-20 h-20 mb-6 rounded-full bg-gray-100 dark:bg-gray-800">
+                <Sparkles className="w-10 h-10 text-gray-400" />
               </div>
-              <h3 className="text-2xl font-bold text-foreground mb-4">
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">
                 {searchTerm ? 'Aucun site trouvé' : 'Aucun site créé'}
               </h3>
-              <p className="text-muted-foreground mb-8 max-w-md mx-auto">
+              <p className="text-gray-600 dark:text-gray-400 mb-8 max-w-md mx-auto">
                 {searchTerm 
                   ? 'Essayez de modifier votre recherche ou vos filtres.'
                   : 'Commencez par créer votre premier site avec l\'IA. C\'est simple et rapide !'
@@ -407,7 +390,7 @@ export function SitesClient() {
               {!searchTerm && (
                 <Button 
                   onClick={() => router.push('/')}
-                  className="bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-white shadow-lg hover:shadow-xl transition-all duration-300"
+                  className="bg-blue-600 hover:bg-blue-700 text-white"
                 >
                   <Plus className="w-4 h-4 mr-2" />
                   Créer mon premier site
@@ -415,134 +398,164 @@ export function SitesClient() {
               )}
             </div>
           ) : (
-            <div className={viewMode === 'grid' 
-              ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
-              : "space-y-4"
-            }>
-              {filteredChats.map((chat, index) => (
-                <div
-                  key={chat.id}
-                  className={`group relative bg-card/80 backdrop-blur-sm border border-border/50 rounded-xl hover:shadow-xl hover:shadow-primary/5 hover:border-primary/20 transition-all duration-300 hover:-translate-y-1 overflow-hidden ${
-                    viewMode === 'list' ? 'flex items-center p-6' : 'p-6'
-                  }`}
-                >
-                  <Link href={`/chats/${chat.id}`} className={viewMode === 'list' ? 'flex-1 flex items-center' : 'block'}>
-                    <div className={viewMode === 'list' ? 'flex items-center gap-4' : 'mb-4'}>
-                      <div className="flex items-center gap-3">
-                        <div className="w-3 h-3 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full shadow-sm"></div>
-                        <h3 className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors truncate">
-                          {getChatDisplayName(chat)}
-                        </h3>
+            <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+              {/* Table Header */}
+              <div className="bg-gray-50 dark:bg-gray-800 px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+                <div className="grid grid-cols-12 gap-4 text-sm font-medium text-gray-500 dark:text-gray-400">
+                  <div className="col-span-4">Nom du projet</div>
+                  <div className="col-span-2">Statut</div>
+                  <div className="col-span-2">Messages</div>
+                  <div className="col-span-2">Dernière modification</div>
+                  <div className="col-span-2 text-right">Actions</div>
+                </div>
+              </div>
+
+              {/* Table Body */}
+              <div className="divide-y divide-gray-200 dark:divide-gray-700">
+                {filteredChats.map((chat) => (
+                  <div key={chat.id} className="px-6 py-4 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                    <div className="grid grid-cols-12 gap-4 items-center">
+                      {/* Project Name */}
+                      <div className="col-span-4">
+                        <Link href={`/chats/${chat.id}`} className="group">
+                          <div className="flex items-center gap-3">
+                            <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                            <div>
+                              <h3 className="font-medium text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                                {getChatDisplayName(chat)}
+                              </h3>
+                              <p className="text-sm text-gray-500 dark:text-gray-400 truncate max-w-xs">
+                                {getFirstUserMessage(chat)}
+                              </p>
+                            </div>
+                          </div>
+                        </Link>
                       </div>
-                      <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                        <span className="flex items-center gap-1">
+
+                      {/* Status */}
+                      <div className="col-span-2">
+                        <div className="flex items-center gap-2">
+                          {getPrivacyIcon(chat.privacy || 'private')}
+                          <span className="text-sm text-gray-600 dark:text-gray-300">
+                            {getPrivacyDisplayName(chat.privacy || 'private')}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Messages Count */}
+                      <div className="col-span-2">
+                        <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300">
                           <MessageSquare className="w-4 h-4" />
                           {chat.messages?.length || 0} messages
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                          </svg>
-                          {new Date(chat.updatedAt).toLocaleDateString()}
+                        </div>
+                      </div>
+
+                      {/* Last Modified */}
+                      <div className="col-span-2">
+                        <span className="text-sm text-gray-600 dark:text-gray-300">
+                          {new Date(chat.updatedAt).toLocaleDateString('fr-FR', {
+                            day: '2-digit',
+                            month: '2-digit',
+                            year: 'numeric'
+                          })}
                         </span>
                       </div>
+
+                      {/* Actions */}
+                      <div className="col-span-2 text-right">
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="h-8 w-8 p-0 hover:bg-gray-100 dark:hover:bg-gray-700"
+                              disabled={
+                                isRenamingChat ||
+                                isDeletingChat ||
+                                isDuplicatingChat ||
+                                isChangingVisibility
+                              }
+                            >
+                              <MoreHorizontal className="h-4 w-4" />
+                              <span className="sr-only">Options du projet</span>
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end">
+                            <DropdownMenuItem
+                              onClick={(e) => {
+                                e.preventDefault()
+                                setSelectedChatId(chat.id)
+                                setIsDuplicateDialogOpen(true)
+                              }}
+                              disabled={
+                                isRenamingChat ||
+                                isDeletingChat ||
+                                isDuplicatingChat ||
+                                isChangingVisibility
+                              }
+                            >
+                              <Copy className="mr-2 h-4 w-4" />
+                              Dupliquer le projet
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              onClick={(e) => {
+                                e.preventDefault()
+                                setSelectedChatId(chat.id)
+                                setSelectedVisibility(chat.privacy || 'private')
+                                setIsVisibilityDialogOpen(true)
+                              }}
+                              disabled={
+                                isRenamingChat ||
+                                isDeletingChat ||
+                                isDuplicatingChat ||
+                                isChangingVisibility
+                              }
+                            >
+                              {getPrivacyIcon(chat.privacy || 'private')}
+                              <span className="ml-2">Changer la visibilité</span>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              onClick={(e) => {
+                                e.preventDefault()
+                                setSelectedChatId(chat.id)
+                                setRenameChatName(chat.name || '')
+                                setIsRenameDialogOpen(true)
+                              }}
+                              disabled={
+                                isRenamingChat ||
+                                isDeletingChat ||
+                                isDuplicatingChat ||
+                                isChangingVisibility
+                              }
+                            >
+                              <Edit2 className="mr-2 h-4 w-4" />
+                              Renommer le projet
+                            </DropdownMenuItem>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem
+                              onClick={(e) => {
+                                e.preventDefault()
+                                setSelectedChatId(chat.id)
+                                setIsDeleteDialogOpen(true)
+                              }}
+                              disabled={
+                                isRenamingChat ||
+                                isDeletingChat ||
+                                isDuplicatingChat ||
+                                isChangingVisibility
+                              }
+                              className="text-red-600 focus:text-red-600"
+                            >
+                              <Trash2 className="mr-2 h-4 w-4" />
+                              Supprimer le projet
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </div>
                     </div>
-                  </Link>
-
-                  {/* Project Actions Menu */}
-                  <div className={viewMode === 'list' ? 'ml-4' : 'absolute top-4 right-4'}>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="h-8 w-8 p-0 opacity-0 group-hover:opacity-100 transition-all duration-200 rounded-full hover:bg-primary/10 hover:text-primary"
-                          disabled={
-                            isRenamingChat ||
-                            isDeletingChat ||
-                            isDuplicatingChat ||
-                            isChangingVisibility
-                          }
-                        >
-                          <MoreHorizontal className="h-4 w-4" />
-                          <span className="sr-only">Options du projet</span>
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <DropdownMenuItem
-                          onClick={(e) => {
-                            e.preventDefault()
-                            setSelectedChatId(chat.id)
-                            setIsDuplicateDialogOpen(true)
-                          }}
-                          disabled={
-                            isRenamingChat ||
-                            isDeletingChat ||
-                            isDuplicatingChat ||
-                            isChangingVisibility
-                          }
-                        >
-                          <Copy className="mr-2 h-4 w-4" />
-                          Dupliquer le projet
-                        </DropdownMenuItem>
-                        <DropdownMenuItem
-                          onClick={(e) => {
-                            e.preventDefault()
-                            setSelectedChatId(chat.id)
-                            setSelectedVisibility(chat.privacy || 'private')
-                            setIsVisibilityDialogOpen(true)
-                          }}
-                          disabled={
-                            isRenamingChat ||
-                            isDeletingChat ||
-                            isDuplicatingChat ||
-                            isChangingVisibility
-                          }
-                        >
-                          {getPrivacyIcon(chat.privacy || 'private')}
-                          <span className="ml-2">Changer la visibilité</span>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem
-                          onClick={(e) => {
-                            e.preventDefault()
-                            setSelectedChatId(chat.id)
-                            setRenameChatName(chat.name || '')
-                            setIsRenameDialogOpen(true)
-                          }}
-                          disabled={
-                            isRenamingChat ||
-                            isDeletingChat ||
-                            isDuplicatingChat ||
-                            isChangingVisibility
-                          }
-                        >
-                          <Edit2 className="mr-2 h-4 w-4" />
-                          Renommer le projet
-                        </DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem
-                          onClick={(e) => {
-                            e.preventDefault()
-                            setSelectedChatId(chat.id)
-                            setIsDeleteDialogOpen(true)
-                          }}
-                          disabled={
-                            isRenamingChat ||
-                            isDeletingChat ||
-                            isDuplicatingChat ||
-                            isChangingVisibility
-                          }
-                          className="text-destructive focus:text-destructive"
-                        >
-                          <Trash2 className="mr-2 h-4 w-4" />
-                          Supprimer le projet
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
                   </div>
-
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           )}
         </div>

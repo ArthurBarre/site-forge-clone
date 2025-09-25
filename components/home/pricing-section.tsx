@@ -105,7 +105,7 @@ export function PricingSection() {
 
               <Button
                 onClick={() => redirect("/app")}
-                className={`w-full text-sm md:text-base cursor-pointer ${plan.popular ? "gradient-primary text-white border-0" : "glass-light"}`}
+                className={`w-full text-sm md:text-base cursor-pointer border-0 ${plan.popular ? "gradient-primary text-white border-0" : "glass-light text-foreground border-primary"}`}
                 size="lg"
               >
                 {plan.cta}

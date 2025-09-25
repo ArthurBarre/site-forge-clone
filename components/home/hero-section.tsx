@@ -55,7 +55,11 @@ export function HeroSection() {
                 Créer mon site maintenant
                 <ArrowRight className="ml-2 w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6" />
               </Button>
-              <Button variant="outline" size="lg" className="glass-light text-base sm:text-lg lg:text-xl px-6 sm:px-8 lg:px-10 py-3 sm:py-4 lg:py-5 bg-transparent w-full sm:w-auto">
+              <Button
+              className="cursor-pointer"
+                variant="glass-white"
+                size="lg"
+              >
                 <Play className="mr-2 w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6" />
                 Voir la démo vidéo
               </Button>
