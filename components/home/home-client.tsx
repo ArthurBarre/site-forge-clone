@@ -166,7 +166,7 @@ export function HomeClient() {
     setIsDragOver(false)
   }
 
-  const handleSendMessage = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSendMessage = async (e: React.FormEvent<Element>) => {
     e.preventDefault()
     if (!message.trim() || isLoading) return
 
