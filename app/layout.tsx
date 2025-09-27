@@ -4,6 +4,7 @@ import './globals.css'
 import { StreamingProvider } from '@/contexts/streaming-context'
 import { SWRProvider } from '@/components/providers/swr-provider'
 import { SessionProvider } from '@/components/providers/session-provider'
+import { Toaster } from 'sonner'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -78,6 +79,7 @@ export default function RootLayout({
             <StreamingProvider>{children}</StreamingProvider>
           </SWRProvider>
         </SessionProvider>
+        <Toaster />
       </body>
     </html>
   )

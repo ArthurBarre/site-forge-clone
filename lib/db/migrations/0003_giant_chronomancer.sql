@@ -1,0 +1,1 @@
+ALTER TABLE "chat_ownerships" ADD COLUMN "deploy_url" varchar(500);

@@ -38,8 +38,23 @@ export function ChatDetailClient() {
     handleSendMessage,
     handleStreamingComplete,
     handleChatData,
+    projectId,
+    name,
+    deployUrl,
+    deploymentStatus,
+    lastDeployedAt,
+    latestVersionId,
+    refreshChat,
+    handleUndeploy
   } = useChat(chatId)
-
+  
+  // Debug: log deployment info to see if it's being retrieved
+  console.log('Deployment info in chat-detail-client:', {
+    deployUrl,
+    deploymentStatus,
+    lastDeployedAt
+  })
+  
   // Wrapper function to handle attachments
   const handleSubmitWithAttachments = (
     e: React.FormEvent<HTMLFormElement>,
@@ -70,7 +85,7 @@ export function ChatDetailClient() {
       textareaRef.current.focus()
     }
   }, [isLoadingChat])
-  console.log(chatHistory)
+
   return (
     <div
       className={cn(
@@ -117,6 +132,12 @@ export function ChatDetailClient() {
               setIsFullscreen={setIsFullscreen}
               refreshKey={refreshKey}
               setRefreshKey={setRefreshKey}
+              projectId={projectId}
+              chatId={chatId}
+              name={name}
+              latestVersionId={latestVersionId}
+              onDeploymentSuccess={refreshChat}
+              onUndeploy={handleUndeploy}
             />
           }
         />

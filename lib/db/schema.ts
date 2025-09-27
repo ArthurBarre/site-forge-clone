@@ -27,6 +27,7 @@ export const chat_ownerships = pgTable(
     user_id: uuid('user_id')
       .notNull()
       .references(() => users.id),
+    deploy_url: varchar('deploy_url', { length: 500 }), // URL of the deployed site
     created_at: timestamp('created_at').notNull().defaultNow(),
   },
   (table) => ({
@@ -46,3 +47,21 @@ export const anonymous_chat_logs = pgTable('anonymous_chat_logs', {
 })
 
 export type AnonymousChatLog = InferSelectModel<typeof anonymous_chat_logs>
+
+// Track Vercel projects to avoid recreating them
+export const vercel_projects = pgTable('vercel_projects', {
+  id: uuid('id').primaryKey().notNull().defaultRandom(),
+  v0_chat_id: varchar('v0_chat_id', { length: 255 }).notNull(), // v0 API chat ID
+  vercel_project_id: varchar('vercel_project_id', { length: 255 }).notNull(), // Vercel project ID
+  vercel_project_name: varchar('vercel_project_name', { length: 255 }).notNull(), // Vercel project name
+  deploy_url: varchar('deploy_url', { length: 500 }), // URL of the deployed site
+  status: varchar('status', { length: 50 }).notNull().default('draft'), // deployed, draft, failed, etc.
+  last_deployed_at: timestamp('last_deployed_at'), // Last deployment timestamp
+  created_at: timestamp('created_at').notNull().defaultNow(),
+  updated_at: timestamp('updated_at').notNull().defaultNow(),
+}, (table) => ({
+  // Ensure each v0 chat can only have one Vercel project
+  unique_v0_chat: unique().on(table.v0_chat_id),
+}))
+
+export type VercelProject = InferSelectModel<typeof vercel_projects>

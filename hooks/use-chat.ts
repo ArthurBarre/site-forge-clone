@@ -2,11 +2,18 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useStreaming } from '@/contexts/streaming-context'
 import useSWR, { mutate } from 'swr'
+import { toast } from 'sonner'
 
 interface Chat {
   id: string
   demo?: string
   url?: string
+  projectId?: string
+  name?: string
+  deployUrl?: string
+  deploymentStatus?: string
+  lastDeployedAt?: string
+  latestVersionId?: string
   messages?: Array<{
     id: string
     role: 'user' | 'assistant'
@@ -35,6 +42,7 @@ export function useChat(chatId: string) {
     data: currentChat,
     error,
     isLoading: isLoadingChat,
+    mutate: mutateChat,
   } = useSWR<Chat>(chatId ? `/api/chats/${chatId}` : null, {
     onError: (error) => {
       console.error('Error loading chat:', error)
@@ -59,6 +67,7 @@ export function useChat(chatId: string) {
       }
     },
   })
+
 
   // Handle streaming from context (when redirected from homepage)
   useEffect(() => {
@@ -340,6 +349,46 @@ export function useChat(chatId: string) {
     }
   }
 
+  const handleUndeploy = async () => {
+    if (!chatId) return
+
+    // Confirmation dialog
+    const confirmed = window.confirm(
+      'Êtes-vous sûr de vouloir retirer ce site du web ? Il ne sera plus accessible sur internet.'
+    )
+
+    if (!confirmed) return
+
+    try {
+      const response = await fetch('/api/undeploy', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ chatId }),
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to undeploy')
+      }
+
+      // Refresh chat data to update the UI
+      await mutateChat()
+      
+      // Show success toast
+      toast.success("Site retiré du web", {
+        description: "Le site n'est plus accessible sur internet.",
+        duration: 3000,
+      })
+    } catch (error) {
+      console.error('Undeploy error:', error)
+      toast.error("Erreur lors de la suppression", {
+        description: "Impossible de retirer le site du web.",
+        duration: 3000,
+      })
+    }
+  }
+console.log(currentChat)
   return {
     message,
     setMessage,
@@ -352,5 +401,13 @@ export function useChat(chatId: string) {
     handleSendMessage,
     handleStreamingComplete,
     handleChatData,
+    projectId: currentChat?.projectId,
+    name: currentChat?.name,
+    deployUrl: currentChat?.deployUrl,
+    deploymentStatus: currentChat?.deploymentStatus,
+    lastDeployedAt: currentChat?.lastDeployedAt,
+    latestVersionId: currentChat?.latestVersion?.id,
+    refreshChat: mutateChat,
+    handleUndeploy,
   }
 }

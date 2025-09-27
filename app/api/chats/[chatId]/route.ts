@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from 'v0-sdk'
 import { auth } from '@/app/(auth)/auth'
 import { getChatOwnership } from '@/lib/db/queries'
+import db from '@/lib/db/connection'
+import { vercel_projects } from '@/lib/db/schema'
+import { eq } from 'drizzle-orm'
 
 // Create v0 client with custom baseUrl if V0_API_URL is set
 const v0 = createClient(
@@ -44,9 +47,50 @@ export async function GET(
     // Fetch chat details using v0 SDK
     const chatDetails = await v0.chats.getById({ chatId })
 
+    // Get deployment URL from Vercel projects table
+    let deployUrl = null
+    let deploymentStatus = null
+    let lastDeployedAt = null
+    
+    console.log('Looking for Vercel project for chatId:', chatId)
+    
+    try {
+      const [vercelProject] = await db.select()
+        .from(vercel_projects)
+        .where(eq(vercel_projects.v0_chat_id, chatId))
+        .limit(1)
+      
+      console.log('Vercel project query result:', vercelProject)
+      
+      if (vercelProject) {
+        deployUrl = vercelProject.deploy_url
+        deploymentStatus = vercelProject.status
+        lastDeployedAt = vercelProject.last_deployed_at
+        console.log('Retrieved Vercel project from database:', {
+          deployUrl,
+          status: deploymentStatus,
+          lastDeployedAt
+        })
+      } else {
+        console.log('No Vercel project found for chat:', chatId)
+      }
+    } catch (dbError) {
+      console.warn('Could not retrieve Vercel project:', dbError)
+    }
+
     console.log('Chat details fetched:', chatDetails)
 
-    return NextResponse.json(chatDetails)
+    // Extract latestVersionId from the chat details
+    const latestVersionId = chatDetails?.latestVersion?.id || null
+    console.log('Extracted latestVersionId:', latestVersionId)
+
+    return NextResponse.json({
+      ...chatDetails,
+      latestVersionId,
+      deployUrl,
+      deploymentStatus,
+      lastDeployedAt
+    })
   } catch (error) {
     console.error('Error fetching chat details:', error)
 
