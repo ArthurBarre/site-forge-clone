@@ -19,6 +19,24 @@ export const metadata: Metadata = {
   title: 'Site Forge',
   description:
     'Site Forge vous permet de créer des sites web en quelques secondes avec l\'IA.',
+  icons: {
+    icon: [
+      { url: '/favicon_new/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/favicon_new/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/favicon_new/android-chrome-192x192.png', sizes: '192x192', type: 'image/png' },
+      { url: '/favicon_new/android-chrome-512x512.png', sizes: '512x512', type: 'image/png' },
+      { url: '/favicon_new/favicon.ico', sizes: 'any' }
+    ],
+    apple: [
+      { url: '/favicon_new/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }
+    ],
+    shortcut: [
+      { url: '/favicon_new/android-chrome-192x192.png', sizes: '192x192', type: 'image/png' }
+    ]
+  },
+  manifest: '/favicon_new/site.webmanifest',
+  themeColor: '#ffffff',
+  viewport: 'width=device-width, initial-scale=1',
 }
 
 export default function RootLayout({

@@ -194,7 +194,7 @@ export function ChatSelector() {
 
       // Close dialog and navigate to home
       setIsDeleteDialogOpen(false)
-      router.push('/')
+      router.push('/app')
     } catch (error) {
       console.error('Error deleting chat:', error)
     } finally {

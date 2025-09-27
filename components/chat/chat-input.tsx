@@ -137,7 +137,7 @@ export function ChatInput({
             onChange={(e) => setMessage(e.target.value)}
             value={message}
             className="min-h-[60px]"
-            placeholder="Continue the conversation..."
+            placeholder="Continuer la conversation..."
           />
           <PromptInputToolbar>
             <PromptInputTools>
@@ -165,7 +165,7 @@ export function ChatInput({
           <Suggestions>
             <Suggestion
               onClick={() => {
-                setMessage('Landing page')
+                setMessage('Page d\'accueil')
                 // Submit after setting message
                 setTimeout(() => {
                   const form = textareaRef?.current?.form
@@ -174,11 +174,11 @@ export function ChatInput({
                   }
                 }, 0)
               }}
-              suggestion="Landing page"
+              suggestion="Page d'accueil"
             />
             <Suggestion
               onClick={() => {
-                setMessage('Todo app')
+                setMessage('Application de tâches')
                 // Submit after setting message
                 setTimeout(() => {
                   const form = textareaRef?.current?.form
@@ -187,11 +187,11 @@ export function ChatInput({
                   }
                 }, 0)
               }}
-              suggestion="Todo app"
+              suggestion="Application de tâches"
             />
             <Suggestion
               onClick={() => {
-                setMessage('Dashboard')
+                setMessage('Tableau de bord')
                 // Submit after setting message
                 setTimeout(() => {
                   const form = textareaRef?.current?.form
@@ -200,7 +200,7 @@ export function ChatInput({
                   }
                 }, 0)
               }}
-              suggestion="Dashboard"
+              suggestion="Tableau de bord"
             />
             <Suggestion
               onClick={() => {
@@ -217,7 +217,7 @@ export function ChatInput({
             />
             <Suggestion
               onClick={() => {
-                setMessage('E-commerce')
+                setMessage('Boutique en ligne')
                 // Submit after setting message
                 setTimeout(() => {
                   const form = textareaRef?.current?.form
@@ -226,7 +226,7 @@ export function ChatInput({
                   }
                 }, 0)
               }}
-              suggestion="E-commerce"
+              suggestion="Boutique en ligne"
             />
             <Suggestion
               onClick={() => {
@@ -243,7 +243,7 @@ export function ChatInput({
             />
             <Suggestion
               onClick={() => {
-                setMessage('Chat app')
+                setMessage('Application de chat')
                 // Submit after setting message
                 setTimeout(() => {
                   const form = textareaRef?.current?.form
@@ -252,11 +252,11 @@ export function ChatInput({
                   }
                 }, 0)
               }}
-              suggestion="Chat app"
+              suggestion="Application de chat"
             />
             <Suggestion
               onClick={() => {
-                setMessage('Calculator')
+                setMessage('Calculatrice')
                 // Submit after setting message
                 setTimeout(() => {
                   const form = textareaRef?.current?.form
@@ -265,7 +265,7 @@ export function ChatInput({
                   }
                 }, 0)
               }}
-              suggestion="Calculator"
+              suggestion="Calculatrice"
             />
           </Suggestions>
         </div>

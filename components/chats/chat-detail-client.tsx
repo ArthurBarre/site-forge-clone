@@ -70,7 +70,7 @@ export function ChatDetailClient() {
       textareaRef.current.focus()
     }
   }, [isLoadingChat])
-
+  console.log(chatHistory)
   return (
     <div
       className={cn(

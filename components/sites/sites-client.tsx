@@ -314,8 +314,8 @@ export function SitesClient() {
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={() => router.push('/')}
-                  className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100"
+                  onClick={() => router.push('/app')}
+                  className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100 cursor-pointer"
                 >
                   <ArrowLeft className="h-4 w-4 mr-2" />
                   Retour
@@ -389,7 +389,7 @@ export function SitesClient() {
               </p>
               {!searchTerm && (
                 <Button 
-                  onClick={() => router.push('/')}
+                  onClick={() => router.push('/app')}
                   className="bg-blue-600 hover:bg-blue-700 text-white"
                 >
                   <Plus className="w-4 h-4 mr-2" />
