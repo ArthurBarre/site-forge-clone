@@ -13,7 +13,9 @@ interface Chat {
   deployUrl?: string
   deploymentStatus?: string
   lastDeployedAt?: string
-  latestVersionId?: string
+  latestVersion?: {
+    id: string
+  }
   messages?: Array<{
     id: string
     role: 'user' | 'assistant'
