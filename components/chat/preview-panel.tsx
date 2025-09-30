@@ -175,9 +175,26 @@ export function PreviewPanel({
               </div>
             ) : (
               <div className="flex items-center gap-2">
-                <div className="text-xs text-muted-foreground bg-muted px-2 py-1 rounded">
-                  Aucun déploiement
-                </div>
+                {currentChat?.demo ? (
+                  <div className="flex items-center gap-2">
+                    <div className="text-xs text-yellow-700 dark:text-yellow-300 bg-yellow-100 dark:bg-yellow-900/20 px-2 py-1 rounded border border-yellow-200 dark:border-yellow-800">
+                      Brouillon
+                    </div>
+                    <Button
+                      onClick={() => window.open(currentChat.demo, '_blank')}
+                      variant="outline"
+                      size="sm"
+                      className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
+                    >
+                      <ExternalLink className="mr-1 h-3 w-3" />
+                      Voir le brouillon
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="text-xs text-muted-foreground bg-muted px-2 py-1 rounded">
+                    Aucun déploiement
+                  </div>
+                )}
                 <DeploymentModal 
                   projectId={projectId || ''} 
                   chatId={chatId} 

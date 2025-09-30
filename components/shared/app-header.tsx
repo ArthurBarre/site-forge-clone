@@ -3,19 +3,14 @@
 import { useState, useEffect, Suspense } from 'react'
 import Link from 'next/link'
 import { usePathname, useSearchParams } from 'next/navigation'
-// import { ChatSelector } from './chat-selector'
-
-import { MobileMenu } from './mobile-menu'
 import { useSession } from 'next-auth/react'
 import { UserNav } from '@/components/user-nav'
 import { Button } from '@/components/ui/button'
-import { VercelIcon, GitHubIcon } from '@/components/ui/icons'
 import { DEPLOY_URL } from '@/lib/constants'
-import { Info } from 'lucide-react'
+import { Plus } from 'lucide-react'
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
@@ -52,6 +47,7 @@ export function AppHeader({ className = '' }: AppHeaderProps) {
   const pathname = usePathname()
   const { data: session } = useSession()
   const isHomepage = pathname === '/'
+  const isSitesPage = pathname === '/sites'
   const [isInfoDialogOpen, setIsInfoDialogOpen] = useState(false)
 
   // Handle logo click - reset UI if on homepage, otherwise navigate to homepage
@@ -82,37 +78,27 @@ export function AppHeader({ className = '' }: AppHeaderProps) {
               onClick={handleLogoClick}
               className="relative z-10"
             >
-            <AuroraText
-            className="text-lg font-semibold text-gray-900 dark:text-white hover:text-gray-700 dark:hover:text-gray-300"
-            >SiteForge</AuroraText>
-
-
+              <AuroraText
+                className="text-lg font-semibold text-gray-900 dark:text-white hover:text-gray-700 dark:hover:text-gray-300"
+              >
+                SiteForge
+              </AuroraText>
             </Link>
-
-            {/* Hide ChatSelector on mobile */}
-            {/* <div className="hidden lg:block">
-              <ChatSelector />
-            </div> */}
           </div>
 
-          {/* Desktop right side - Navigation and User */}
-          <div className="hidden lg:flex items-center gap-3 relative z-10">
+          {/* Right side - Navigation and User */}
+          <div className="flex items-center gap-3 relative z-10">
+            {/* Navigation links - visible on all screen sizes */}
             <Link
               href="/sites"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-all duration-200 cursor-pointer relative z-10"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-all duration-200 cursor-pointer"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
               </svg>
-              Mes sites
+              <span className="hidden sm:inline">Mes sites</span>
             </Link>
             <UserNav session={session} />
-          </div>
-
-          {/* Mobile right side - Only menu button and user avatar */}
-          <div className="flex lg:hidden items-center gap-2 relative z-10">
-            <UserNav session={session} />
-            <MobileMenu onInfoDialogOpen={() => setIsInfoDialogOpen(true)} />
           </div>
         </div>
       </div>
@@ -121,55 +107,26 @@ export function AppHeader({ className = '' }: AppHeaderProps) {
       <Dialog open={isInfoDialogOpen} onOpenChange={setIsInfoDialogOpen}>
         <DialogContent className="max-w-2xl">
           <DialogHeader>
-            {/* <DialogTitle className="text-2xl font-bold mb-4">
-              v0 Clone Platform
-            </DialogTitle> */}
+            <DialogTitle className="text-2xl font-bold mb-4">
+              SiteForge
+            </DialogTitle>
           </DialogHeader>
           <div className="space-y-4 text-sm text-gray-600 dark:text-gray-300">
             <p>
-              This is a <strong>demo</strong> of a{' '}
-              <a
-                href="https://v0.app"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="underline text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
-              >
-                v0 clone
-              </a>{' '}
-              where users can enter text prompts and generate React components
-              and applications using AI.
+              <strong>SiteForge</strong> est une plateforme qui vous permet de créer des sites web professionnels en quelques minutes grâce à l'IA.
             </p>
             <p>
-              It's built with{' '}
-              <a
-                href="https://nextjs.org"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="underline text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
-              >
-                Next.js
-              </a>{' '}
-              and the{' '}
-              <a
-                href="https://v0-sdk.dev"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="underline text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
-              >
-                v0 SDK
-              </a>{' '}
-              to provide a full-featured interface with authentication, database
-              integration, and real-time streaming responses.
+              Décrivez simplement ce que vous voulez créer et notre IA va construire votre site web complet et prêt à publier.
             </p>
             <p>
-              Try the demo or{' '}
+              Essayez maintenant ou{' '}
               <a
                 href={DEPLOY_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="underline text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
               >
-                deploy your own
+                déployez votre propre instance
               </a>
               .
             </p>
@@ -179,7 +136,7 @@ export function AppHeader({ className = '' }: AppHeaderProps) {
               onClick={() => setIsInfoDialogOpen(false)}
               className="bg-gray-900 dark:bg-gray-100 hover:bg-gray-800 dark:hover:bg-gray-200 text-white dark:text-gray-900"
             >
-              Try now
+              Compris
             </Button>
           </div>
         </DialogContent>
