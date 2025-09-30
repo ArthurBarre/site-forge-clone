@@ -29,7 +29,7 @@ export function BottomToolbar({
             )}
           >
             <MessageSquare className="h-3 w-3" />
-            <span>Chat</span>
+            <span>Modifier</span>
           </button>
 
           <button
@@ -45,7 +45,7 @@ export function BottomToolbar({
             )}
           >
             <Monitor className="h-3 w-3" />
-            <span>Preview</span>
+            <span>Consulter</span>
           </button>
         </div>
       </div>

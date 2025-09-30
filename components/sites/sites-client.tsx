@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { MessageSquare, Eye, EyeOff, Users, Lock, MoreHorizontal, Edit2, Trash2, Copy, Plus, Grid, List, Search, Filter, ArrowLeft, Sparkles } from 'lucide-react'
+import { Eye, EyeOff, Users, Lock, MoreHorizontal, Edit2, Trash2, Copy, Plus, Search, ArrowLeft, Sparkles } from 'lucide-react'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -38,10 +38,6 @@ interface Chat {
   createdAt: string
   updatedAt: string
   url?: string
-  messages?: Array<{
-    role: string
-    content: string
-  }>
 }
 
 // Helper function to get display name for a chat
@@ -90,7 +86,6 @@ export function SitesClient() {
   const [chats, setChats] = useState<Chat[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
   const [filterPrivacy, setFilterPrivacy] = useState<string>('all')
   const [isRenameDialogOpen, setIsRenameDialogOpen] = useState(false)
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
@@ -128,15 +123,9 @@ export function SitesClient() {
     fetchChats()
   }, [session?.user?.id])
 
-  const getFirstUserMessage = (chat: Chat) => {
-    const firstUserMessage = chat.messages?.find((msg) => msg.role === 'user')
-    return firstUserMessage?.content || 'Aucun message'
-  }
-
   // Filter chats based on search and privacy filter
   const filteredChats = chats.filter((chat) => {
-    const matchesSearch = getChatDisplayName(chat).toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         getFirstUserMessage(chat).toLowerCase().includes(searchTerm.toLowerCase())
+    const matchesSearch = getChatDisplayName(chat).toLowerCase().includes(searchTerm.toLowerCase())
     const matchesPrivacy = filterPrivacy === 'all' || chat.privacy === filterPrivacy
     return matchesSearch && matchesPrivacy
   })
@@ -324,14 +313,11 @@ export function SitesClient() {
                   <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
                     Mes sites
                   </h1>
-                  <p className="text-gray-600 dark:text-gray-400 mt-1">
-                    Gérez et accédez à tous vos projets créés avec l'IA
-                  </p>
                 </div>
               </div>
               <Button 
                 onClick={() => router.push('/app')}
-                className="bg-blue-600 hover:bg-blue-700 text-white"
+                className="bg-blue-600 hover:bg-blue-700 text-white cursor-pointer"
               >
                 <Plus className="w-4 h-4 mr-2" />
                 Créer un site
@@ -398,165 +384,282 @@ export function SitesClient() {
               )}
             </div>
           ) : (
-            <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
-              {/* Table Header */}
-              <div className="bg-gray-50 dark:bg-gray-800 px-6 py-4 border-b border-gray-200 dark:border-gray-700">
-                <div className="grid grid-cols-12 gap-4 text-sm font-medium text-gray-500 dark:text-gray-400">
-                  <div className="col-span-4">Nom du projet</div>
-                  <div className="col-span-2">Statut</div>
-                  <div className="col-span-2">Messages</div>
-                  <div className="col-span-2">Dernière modification</div>
-                  <div className="col-span-2 text-right">Actions</div>
+            <>
+              {/* Desktop Table View */}
+              <div className="hidden md:block bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+                {/* Table Header */}
+                <div className="bg-gray-50 dark:bg-gray-800 px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+                  <div className="grid grid-cols-12 gap-4 text-sm font-medium text-gray-500 dark:text-gray-400">
+                    <div className="col-span-6">Nom du projet</div>
+                    <div className="col-span-2">Statut</div>
+                    <div className="col-span-2">Dernière modification</div>
+                    <div className="col-span-2 text-right">Actions</div>
+                  </div>
+                </div>
+
+                {/* Table Body */}
+                <div className="divide-y divide-gray-200 dark:divide-gray-700">
+                  {filteredChats.map((chat) => (
+                    <div key={chat.id} className="px-6 py-4 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                      <div className="grid grid-cols-12 gap-4 items-center">
+                        {/* Project Name */}
+                        <div className="col-span-6">
+                          <Link href={`/chats/${chat.id}`} className="group">
+                            <div className="flex items-center gap-3">
+                              <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                              <div>
+                                <h3 className="font-medium text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                                  {getChatDisplayName(chat)}
+                                </h3>
+                              </div>
+                            </div>
+                          </Link>
+                        </div>
+
+                        {/* Status */}
+                        <div className="col-span-2">
+                          <div className="flex items-center gap-2">
+                            {getPrivacyIcon(chat.privacy || 'private')}
+                            <span className="text-sm text-gray-600 dark:text-gray-300">
+                              {getPrivacyDisplayName(chat.privacy || 'private')}
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Last Modified */}
+                        <div className="col-span-2">
+                          <span className="text-sm text-gray-600 dark:text-gray-300">
+                            {new Date(chat.updatedAt).toLocaleDateString('fr-FR', {
+                              day: '2-digit',
+                              month: '2-digit',
+                              year: 'numeric'
+                            })}
+                          </span>
+                        </div>
+
+                        {/* Actions */}
+                        <div className="col-span-2 text-right">
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="h-8 w-8 p-0 hover:bg-gray-100 dark:hover:bg-gray-700"
+                                disabled={
+                                  isRenamingChat ||
+                                  isDeletingChat ||
+                                  isDuplicatingChat ||
+                                  isChangingVisibility
+                                }
+                              >
+                                <MoreHorizontal className="h-4 w-4" />
+                                <span className="sr-only">Options du projet</span>
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                              <DropdownMenuItem
+                                onClick={(e) => {
+                                  e.preventDefault()
+                                  setSelectedChatId(chat.id)
+                                  setIsDuplicateDialogOpen(true)
+                                }}
+                                disabled={
+                                  isRenamingChat ||
+                                  isDeletingChat ||
+                                  isDuplicatingChat ||
+                                  isChangingVisibility
+                                }
+                              >
+                                <Copy className="mr-2 h-4 w-4" />
+                                Dupliquer le projet
+                              </DropdownMenuItem>
+                              <DropdownMenuItem
+                                onClick={(e) => {
+                                  e.preventDefault()
+                                  setSelectedChatId(chat.id)
+                                  setSelectedVisibility(chat.privacy || 'private')
+                                  setIsVisibilityDialogOpen(true)
+                                }}
+                                disabled={
+                                  isRenamingChat ||
+                                  isDeletingChat ||
+                                  isDuplicatingChat ||
+                                  isChangingVisibility
+                                }
+                              >
+                                {getPrivacyIcon(chat.privacy || 'private')}
+                                <span className="ml-2">Changer la visibilité</span>
+                              </DropdownMenuItem>
+                              <DropdownMenuItem
+                                onClick={(e) => {
+                                  e.preventDefault()
+                                  setSelectedChatId(chat.id)
+                                  setRenameChatName(chat.name || '')
+                                  setIsRenameDialogOpen(true)
+                                }}
+                                disabled={
+                                  isRenamingChat ||
+                                  isDeletingChat ||
+                                  isDuplicatingChat ||
+                                  isChangingVisibility
+                                }
+                              >
+                                <Edit2 className="mr-2 h-4 w-4" />
+                                Renommer le projet
+                              </DropdownMenuItem>
+                              <DropdownMenuSeparator />
+                              <DropdownMenuItem
+                                onClick={(e) => {
+                                  e.preventDefault()
+                                  setSelectedChatId(chat.id)
+                                  setIsDeleteDialogOpen(true)
+                                }}
+                                disabled={
+                                  isRenamingChat ||
+                                  isDeletingChat ||
+                                  isDuplicatingChat ||
+                                  isChangingVisibility
+                                }
+                                className="text-red-600 focus:text-red-600"
+                              >
+                                <Trash2 className="mr-2 h-4 w-4" />
+                                Supprimer le projet
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
 
-              {/* Table Body */}
-              <div className="divide-y divide-gray-200 dark:divide-gray-700">
+              {/* Mobile Card View */}
+              <div className="md:hidden space-y-4">
                 {filteredChats.map((chat) => (
-                  <div key={chat.id} className="px-6 py-4 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
-                    <div className="grid grid-cols-12 gap-4 items-center">
-                      {/* Project Name */}
-                      <div className="col-span-4">
-                        <Link href={`/chats/${chat.id}`} className="group">
-                          <div className="flex items-center gap-3">
-                            <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                            <div>
-                              <h3 className="font-medium text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                                {getChatDisplayName(chat)}
-                              </h3>
-                              <p className="text-sm text-gray-500 dark:text-gray-400 truncate max-w-xs">
-                                {getFirstUserMessage(chat)}
-                              </p>
-                            </div>
+                  <div key={chat.id} className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700 p-4 hover:shadow-md transition-shadow">
+                    <div className="flex items-start justify-between mb-3">
+                      <Link href={`/chats/${chat.id}`} className="group flex-1">
+                        <div className="flex items-center gap-3">
+                          <div className="w-2 h-2 bg-green-500 rounded-full flex-shrink-0 mt-2"></div>
+                          <div className="flex-1 min-w-0">
+                            <h3 className="font-medium text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors truncate">
+                              {getChatDisplayName(chat)}
+                            </h3>
                           </div>
-                        </Link>
-                      </div>
+                        </div>
+                      </Link>
+                      
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="h-8 w-8 p-0 hover:bg-gray-100 dark:hover:bg-gray-700 flex-shrink-0"
+                            disabled={
+                              isRenamingChat ||
+                              isDeletingChat ||
+                              isDuplicatingChat ||
+                              isChangingVisibility
+                            }
+                          >
+                            <MoreHorizontal className="h-4 w-4" />
+                            <span className="sr-only">Options du projet</span>
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <DropdownMenuItem
+                            onClick={(e) => {
+                              e.preventDefault()
+                              setSelectedChatId(chat.id)
+                              setIsDuplicateDialogOpen(true)
+                            }}
+                            disabled={
+                              isRenamingChat ||
+                              isDeletingChat ||
+                              isDuplicatingChat ||
+                              isChangingVisibility
+                            }
+                          >
+                            <Copy className="mr-2 h-4 w-4" />
+                            Dupliquer le projet
+                          </DropdownMenuItem>
+                          <DropdownMenuItem
+                            onClick={(e) => {
+                              e.preventDefault()
+                              setSelectedChatId(chat.id)
+                              setSelectedVisibility(chat.privacy || 'private')
+                              setIsVisibilityDialogOpen(true)
+                            }}
+                            disabled={
+                              isRenamingChat ||
+                              isDeletingChat ||
+                              isDuplicatingChat ||
+                              isChangingVisibility
+                            }
+                          >
+                            {getPrivacyIcon(chat.privacy || 'private')}
+                            <span className="ml-2">Changer la visibilité</span>
+                          </DropdownMenuItem>
+                          <DropdownMenuItem
+                            onClick={(e) => {
+                              e.preventDefault()
+                              setSelectedChatId(chat.id)
+                              setRenameChatName(chat.name || '')
+                              setIsRenameDialogOpen(true)
+                            }}
+                            disabled={
+                              isRenamingChat ||
+                              isDeletingChat ||
+                              isDuplicatingChat ||
+                              isChangingVisibility
+                            }
+                          >
+                            <Edit2 className="mr-2 h-4 w-4" />
+                            Renommer le projet
+                          </DropdownMenuItem>
+                          <DropdownMenuSeparator />
+                          <DropdownMenuItem
+                            onClick={(e) => {
+                              e.preventDefault()
+                              setSelectedChatId(chat.id)
+                              setIsDeleteDialogOpen(true)
+                            }}
+                            disabled={
+                              isRenamingChat ||
+                              isDeletingChat ||
+                              isDuplicatingChat ||
+                              isChangingVisibility
+                            }
+                            className="text-red-600 focus:text-red-600"
+                          >
+                            <Trash2 className="mr-2 h-4 w-4" />
+                            Supprimer le projet
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </div>
 
-                      {/* Status */}
-                      <div className="col-span-2">
-                        <div className="flex items-center gap-2">
+                    {/* Card Footer with metadata */}
+                    <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
+                      <div className="flex items-center gap-4">
+                        <div className="flex items-center gap-1">
                           {getPrivacyIcon(chat.privacy || 'private')}
-                          <span className="text-sm text-gray-600 dark:text-gray-300">
-                            {getPrivacyDisplayName(chat.privacy || 'private')}
-                          </span>
+                          <span>{getPrivacyDisplayName(chat.privacy || 'private')}</span>
                         </div>
                       </div>
-
-                      {/* Messages Count */}
-                      <div className="col-span-2">
-                        <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300">
-                          <MessageSquare className="w-4 h-4" />
-                          {chat.messages?.length || 0} messages
-                        </div>
-                      </div>
-
-                      {/* Last Modified */}
-                      <div className="col-span-2">
-                        <span className="text-sm text-gray-600 dark:text-gray-300">
-                          {new Date(chat.updatedAt).toLocaleDateString('fr-FR', {
-                            day: '2-digit',
-                            month: '2-digit',
-                            year: 'numeric'
-                          })}
-                        </span>
-                      </div>
-
-                      {/* Actions */}
-                      <div className="col-span-2 text-right">
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              className="h-8 w-8 p-0 hover:bg-gray-100 dark:hover:bg-gray-700"
-                              disabled={
-                                isRenamingChat ||
-                                isDeletingChat ||
-                                isDuplicatingChat ||
-                                isChangingVisibility
-                              }
-                            >
-                              <MoreHorizontal className="h-4 w-4" />
-                              <span className="sr-only">Options du projet</span>
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
-                            <DropdownMenuItem
-                              onClick={(e) => {
-                                e.preventDefault()
-                                setSelectedChatId(chat.id)
-                                setIsDuplicateDialogOpen(true)
-                              }}
-                              disabled={
-                                isRenamingChat ||
-                                isDeletingChat ||
-                                isDuplicatingChat ||
-                                isChangingVisibility
-                              }
-                            >
-                              <Copy className="mr-2 h-4 w-4" />
-                              Dupliquer le projet
-                            </DropdownMenuItem>
-                            <DropdownMenuItem
-                              onClick={(e) => {
-                                e.preventDefault()
-                                setSelectedChatId(chat.id)
-                                setSelectedVisibility(chat.privacy || 'private')
-                                setIsVisibilityDialogOpen(true)
-                              }}
-                              disabled={
-                                isRenamingChat ||
-                                isDeletingChat ||
-                                isDuplicatingChat ||
-                                isChangingVisibility
-                              }
-                            >
-                              {getPrivacyIcon(chat.privacy || 'private')}
-                              <span className="ml-2">Changer la visibilité</span>
-                            </DropdownMenuItem>
-                            <DropdownMenuItem
-                              onClick={(e) => {
-                                e.preventDefault()
-                                setSelectedChatId(chat.id)
-                                setRenameChatName(chat.name || '')
-                                setIsRenameDialogOpen(true)
-                              }}
-                              disabled={
-                                isRenamingChat ||
-                                isDeletingChat ||
-                                isDuplicatingChat ||
-                                isChangingVisibility
-                              }
-                            >
-                              <Edit2 className="mr-2 h-4 w-4" />
-                              Renommer le projet
-                            </DropdownMenuItem>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem
-                              onClick={(e) => {
-                                e.preventDefault()
-                                setSelectedChatId(chat.id)
-                                setIsDeleteDialogOpen(true)
-                              }}
-                              disabled={
-                                isRenamingChat ||
-                                isDeletingChat ||
-                                isDuplicatingChat ||
-                                isChangingVisibility
-                              }
-                              className="text-red-600 focus:text-red-600"
-                            >
-                              <Trash2 className="mr-2 h-4 w-4" />
-                              Supprimer le projet
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </div>
+                      <span className="text-xs">
+                        {new Date(chat.updatedAt).toLocaleDateString('fr-FR', {
+                          day: '2-digit',
+                          month: '2-digit',
+                          year: 'numeric'
+                        })}
+                      </span>
                     </div>
                   </div>
                 ))}
               </div>
-            </div>
+            </>
           )}
         </div>
       </div>
@@ -613,8 +716,7 @@ export function SitesClient() {
             <DialogTitle>Supprimer le projet</DialogTitle>
             <DialogDescription>
               Êtes-vous sûr de vouloir supprimer ce projet ? Cette action ne peut
-              pas être annulée et supprimera définitivement le projet et tous ses
-              messages.
+              pas être annulée et supprimera définitivement le projet.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
