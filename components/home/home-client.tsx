@@ -3,15 +3,10 @@
 import { useState, useEffect, useRef, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
+import { Send, Loader2, Image as ImageIcon } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Textarea } from '@/components/ui/textarea'
 import {
-  PromptInput,
-  PromptInputImageButton,
-  PromptInputImagePreview,
-  PromptInputMicButton,
-  PromptInputSubmit,
-  PromptInputTextarea,
-  PromptInputToolbar,
-  PromptInputTools,
   createImageAttachment,
   createImageAttachmentFromStored,
   savePromptToStorage,
@@ -529,24 +524,24 @@ export function HomeClient() {
       <AppHeader />
 
       {/* Main Content */}
-      <div className="flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8 relative z-10 py-8 md:py-0">
         <div className="max-w-6xl w-full">
-          {/* Hero Section */}
-          <div className="text-center mb-12 md:mb-16">
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-gray-900 via-blue-900 to-purple-900 dark:from-white dark:via-blue-100 dark:to-purple-100 bg-clip-text text-transparent leading-tight mt-4">
+          {/* Hero Section - Optimisé pour mobile */}
+          <div className="text-center mb-6 md:mb-12">
+            <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold mb-4 md:mb-6 bg-gradient-to-r from-gray-900 via-blue-900 to-purple-900 dark:from-white dark:via-blue-100 dark:to-purple-100 bg-clip-text text-transparent leading-tight">
               Votre site web
               <br />
-              <AuroraText className="text-3xl sm:text-4xl md:text-5xl bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              <AuroraText className="text-2xl sm:text-4xl md:text-5xl bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                 en 30 secondes
               </AuroraText>
             </h1>
-            <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed mb-8">
+            <p className="text-base sm:text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed mb-4 md:mb-8 px-2">
               Décrivez simplement ce que vous voulez créer et notre IA va construire votre site web professionnel. 
               <span className="font-semibold text-blue-600 dark:text-blue-400"> Aucune compétence technique requise.</span>
             </p>
             
-            {/* Exemples d'inspiration */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto mb-8">
+            {/* Exemples d'inspiration - Version carrousel mobile */}
+            <div className="hidden md:grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto mb-8">
               <div className="bg-white/10 dark:bg-gray-800/50 backdrop-blur-sm rounded-lg p-4 border border-white/20 dark:border-gray-700/50">
                 <div className="text-2xl mb-2">🏪</div>
                 <h3 className="font-semibold text-gray-900 dark:text-white mb-1">Boutique en ligne</h3>
@@ -564,8 +559,24 @@ export function HomeClient() {
               </div>
             </div>
             
-            {/* Call to action */}
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 text-sm text-gray-500 dark:text-gray-400">
+            {/* Version mobile compacte des exemples */}
+            <div className="md:hidden flex justify-between gap-2 max-w-full mx-auto mb-6 px-2">
+              <div className="flex-1 bg-white/10 dark:bg-gray-800/50 backdrop-blur-sm rounded-lg p-3 border border-white/20 dark:border-gray-700/50">
+                <div className="text-xl mb-1">🏪</div>
+                <h3 className="font-semibold text-gray-900 dark:text-white text-sm">Boutique</h3>
+              </div>
+              <div className="flex-1 bg-white/10 dark:bg-gray-800/50 backdrop-blur-sm rounded-lg p-3 border border-white/20 dark:border-gray-700/50">
+                <div className="text-xl mb-1">🍽️</div>
+                <h3 className="font-semibold text-gray-900 dark:text-white text-sm">Restaurant</h3>
+              </div>
+              <div className="flex-1 bg-white/10 dark:bg-gray-800/50 backdrop-blur-sm rounded-lg p-3 border border-white/20 dark:border-gray-700/50">
+                <div className="text-xl mb-1">💼</div>
+                <h3 className="font-semibold text-gray-900 dark:text-white text-sm">Portfolio</h3>
+              </div>
+            </div>
+            
+            {/* Call to action - Version compacte mobile */}
+            <div className="hidden md:flex flex-col sm:flex-row items-center justify-center gap-4 text-sm text-gray-500 dark:text-gray-400">
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
                 <span>Gratuit pour commencer</span>
@@ -583,19 +594,21 @@ export function HomeClient() {
             </div>
           </div>
 
-          {/* Prompt Input */}
+          {/* Prompt Input - Version mobile/desktop adaptative */}
           <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-8">
-              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">
+            <div className="text-center mb-4 md:mb-8">
+              <h3 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-white mb-2 md:mb-3">
                 Commencez votre projet
               </h3>
-              <p className="text-gray-600 dark:text-gray-400">
-                Décrivez ce que vous voulez créer et laissez l'IA faire le reste
+              <p className="text-sm md:text-base text-gray-600 dark:text-gray-400">
+                Décrivez ce que vous voulez créer
               </p>
             </div>
-            <div className="relative">
+            
+            {/* Version Desktop - Editor complet */}
+            <div className="hidden md:block relative">
               <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-2xl blur-xl"></div>
-              <div className="relative bg-black/80 backdrop-blur-sm rounded-2xl border border-white/20 shadow-2xl overflow-hidden" onClick={handleEditorClick}>
+              <div className="relative bg-black/80 backdrop-blur-sm rounded-2xl border border-white/20 shadow-2xl overflow-hidden">
                 <Editor
                   value={message}
                   onChange={setMessage}
@@ -636,14 +649,102 @@ export function HomeClient() {
                 />
               </div>
             </div>
+
+            {/* Version Mobile - Textarea simple avec bouton visible */}
+            <div className="md:hidden relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-2xl blur-xl"></div>
+              <form onSubmit={handleSendMessage} className="relative bg-black/80 backdrop-blur-sm rounded-2xl border border-white/20 shadow-2xl overflow-hidden">
+                <div className="p-4">
+                  <Textarea
+                    ref={textareaRef}
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    placeholder="Décrivez votre projet... Ex: 'Un site pour restaurant avec menu'"
+                    disabled={isLoading}
+                    className="min-h-[120px] bg-transparent border-none text-white placeholder:text-gray-400 resize-none focus-visible:ring-0 focus-visible:ring-offset-0 text-base"
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault()
+                        if (!isLoading && message.trim()) {
+                          handleSendMessage(e as any)
+                        }
+                      }
+                    }}
+                  />
+                </div>
+                
+                {/* Barre d'actions mobile */}
+                <div className="border-t border-gray-700/50 p-3 flex items-center justify-between bg-black/40">
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    className="h-9 w-9 p-0 text-gray-300 hover:text-white hover:bg-gray-700"
+                    onClick={() => document.getElementById('mobile-image-input')?.click()}
+                    disabled={isLoading}
+                  >
+                    <ImageIcon className="h-5 w-5" />
+                  </Button>
+                  
+                  <Button
+                    type="submit"
+                    size="sm"
+                    className="h-10 px-6 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg"
+                    disabled={isLoading || !message.trim()}
+                  >
+                    {isLoading ? (
+                      <>
+                        <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                        <span>Création...</span>
+                      </>
+                    ) : (
+                      <>
+                        <Send className="h-4 w-4 mr-2" />
+                        <span>Créer</span>
+                      </>
+                    )}
+                  </Button>
+                </div>
+
+                <input
+                  id="mobile-image-input"
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  onChange={(e) => {
+                    const files = Array.from(e.target.files || []).filter(file => 
+                      file.type.startsWith('image/')
+                    )
+                    if (files.length > 0) {
+                      handleImageFiles(files)
+                    }
+                    e.target.value = ''
+                  }}
+                  className="hidden"
+                />
+                
+                {/* BorderBeam Effects */}
+                <BorderBeam
+                  duration={8}
+                  size={300}
+                  className="from-transparent via-blue-500 to-transparent"
+                />
+                <BorderBeam
+                  duration={8}
+                  delay={4}
+                  size={300}
+                  borderWidth={2}
+                  className="from-transparent via-purple-500 to-transparent"
+                />
+              </form>
+            </div>
           </div>
 
-
           {/* Footer */}
-          <div className="mt-16 mb-16 md:mt-20 text-center">
+          <div className="mt-8 md:mt-16 mb-8 md:mb-16 text-center">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 dark:bg-gray-800/50 backdrop-blur-sm border border-white/20 dark:border-gray-700/50">
               <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-              <span className="text-sm text-gray-600 dark:text-gray-400">
+              <span className="text-xs md:text-sm text-gray-600 dark:text-gray-400">
                 Propulsé par{' '}
                 <Link
                   href="https://v0-sdk.dev"
